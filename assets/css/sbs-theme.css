@@ -849,4 +849,54 @@ header.elementor-location-header,
     }
 }
 
+/* 9-Tier Sticky Comparison Table Styles */
+.sbs-comparison-table {
+    width: 100% !important;
+    border-collapse: collapse !important;
+    background: #ffffff !important;
+    text-align: left !important;
+    min-width: 1500px !important;
+}
 
+.sbs-comparison-table th, 
+.sbs-comparison-table td {
+    border-bottom: 1px solid #f1f5f9 !important;
+    border-left: 1px solid #f1f5f9 !important;
+}
+
+.sbs-comparison-table th:first-child,
+.sbs-comparison-table td:first-child {
+    position: sticky !important;
+    left: 0 !important;
+    z-index: 10 !important;
+    box-shadow: 4px 0 10px -4px rgba(0,0,0,0.15) !important;
+    border-left: none !important;
+}
+
+/* Header colors */
+.sbs-comparison-table thead tr th {
+    background: #0c1a30 !important;
+    color: #ffffff !important;
+}
+
+.sbs-comparison-table thead tr th:first-child {
+    background: #0c1a30 !important;
+    z-index: 11 !important;
+}
+
+/* Alternating background styles for sticky column td */
+.sbs-comparison-table tbody tr:nth-child(even) {
+    background: #f8fafc !important;
+}
+
+.sbs-comparison-table tbody tr:nth-child(even) td:first-child {
+    background: #f8fafc !important;
+}
+
+.sbs-comparison-table tbody tr:nth-child(odd) {
+    background: #ffffff !important;
+}
+
+.sbs-comparison-table tbody tr:nth-child(odd) td:first-child {
+    background: #ffffff !important;
+}
