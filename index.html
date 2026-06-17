@@ -654,9 +654,33 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
                             if (gate) gate.style.display = 'none';
                             if (mainContent) mainContent.style.display = 'block';
                         } else {
-                            await window.supabaseClient.auth.signOut();
-                            alert("Profile missing. Please contact system administrators.");
-                            window.location.reload();
+                            try {
+                                const { data: newProfile, error: insertError } = await window.supabaseClient
+                                    .from('user_profiles')
+                                    .insert([{
+                                        id: data.user.id,
+                                        email: data.user.email,
+                                        full_name: data.user.user_metadata?.full_name || 'Summit Attendee',
+                                        role: data.user.user_metadata?.role || 'attendee',
+                                        is_verified: true,
+                                        account_status: 'active'
+                                    }])
+                                    .select()
+                                    .single();
+                                
+                                if (insertError) throw insertError;
+                                
+                                // Authorized! Hide gate overlay and display content
+                                const gate = document.getElementById('homepage-gate');
+                                const mainContent = document.getElementById('main-website-content');
+                                if (gate) gate.style.display = 'none';
+                                if (mainContent) mainContent.style.display = 'block';
+                            } catch (insertErr) {
+                                console.error("Auto-profile creation failed:", insertErr);
+                                await window.supabaseClient.auth.signOut();
+                                alert("Profile missing. Please contact system administrators.");
+                                window.location.reload();
+                            }
                         }
                     } else {
                         window.location.reload();

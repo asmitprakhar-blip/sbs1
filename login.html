@@ -444,12 +444,34 @@
                 if (window.authAPI) {
                     const profile = await window.authAPI.getUserProfile(data.user.id);
                     
-                    setTimeout(() => {
+                    setTimeout(async () => {
                         if (profile) {
                             const dashboard = window.authAPI.ROLE_DASHBOARD_MAP[profile.role] || 'attendee-dashboard.html';
                             window.location.href = dashboard;
                         } else {
-                            window.location.href = 'login.html';
+                            try {
+                                const { data: newProfile, error: insertError } = await window.supabaseClient
+                                    .from('user_profiles')
+                                    .insert([{
+                                        id: data.user.id,
+                                        email: data.user.email,
+                                        full_name: data.user.user_metadata?.full_name || 'Summit Attendee',
+                                        role: data.user.user_metadata?.role || 'attendee',
+                                        is_verified: true,
+                                        account_status: 'active'
+                                    }])
+                                    .select()
+                                    .single();
+                                
+                                if (insertError) throw insertError;
+                                
+                                const dashboard = window.authAPI.ROLE_DASHBOARD_MAP[newProfile.role] || 'attendee-dashboard.html';
+                                window.location.href = dashboard;
+                            } catch (insertErr) {
+                                console.error("Auto-profile creation failed:", insertErr);
+                                await window.supabaseClient.auth.signOut();
+                                window.location.href = 'login.html';
+                            }
                         }
                     }, 1500);
                 } else {

@@ -123,10 +123,28 @@ document.addEventListener('DOMContentLoaded', async () => {
         
         // Verify user profile status
         if (window.authAPI) {
-            const profile = await window.authAPI.getUserProfile(user.id);
+            let profile = await window.authAPI.getUserProfile(user.id);
             if (!profile) {
-                window.location.href = 'index.html';
-                return;
+                try {
+                    const { data: newProfile, error: insertError } = await window.supabaseClient
+                        .from('user_profiles')
+                        .insert([{
+                            id: user.id,
+                            email: user.email,
+                            full_name: user.user_metadata?.full_name || 'Summit Attendee',
+                            role: user.user_metadata?.role || 'attendee',
+                            is_verified: true,
+                            account_status: 'active'
+                        }])
+                        .select()
+                        .single();
+                    if (insertError) throw insertError;
+                    profile = newProfile;
+                } catch (insertErr) {
+                    console.error("Auto-profile creation in route guard failed:", insertErr);
+                    window.location.href = 'index.html';
+                    return;
+                }
             }
             if (profile.account_status === 'suspended') {
                 alert("Your account is suspended. Please contact support.");
@@ -149,9 +167,27 @@ document.addEventListener('DOMContentLoaded', async () => {
             if (user) {
                 let hasProfile = true;
                 if (window.authAPI) {
-                    const profile = await window.authAPI.getUserProfile(user.id);
+                    let profile = await window.authAPI.getUserProfile(user.id);
                     if (!profile) {
-                        hasProfile = false;
+                        try {
+                            const { data: newProfile, error: insertError } = await window.supabaseClient
+                                .from('user_profiles')
+                                .insert([{
+                                    id: user.id,
+                                    email: user.email,
+                                    full_name: user.user_metadata?.full_name || 'Summit Attendee',
+                                    role: user.user_metadata?.role || 'attendee',
+                                    is_verified: true,
+                                    account_status: 'active'
+                                }])
+                                .select()
+                                .single();
+                            if (insertError) throw insertError;
+                            profile = newProfile;
+                        } catch (insertErr) {
+                            console.error("Auto-profile creation in public route failed:", insertErr);
+                            hasProfile = false;
+                        }
                     }
                 }
                 
