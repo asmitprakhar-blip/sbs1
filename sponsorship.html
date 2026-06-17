@@ -3030,7 +3030,7 @@
                   <ul
                     style="list-style: none; padding: 0; margin: 0; font-size: 13.5px; color: #475569; line-height: 1.8;">
                     <li style="margin-bottom: 8px; display: flex; align-items: center; gap: 10px;">
-                      <span style="color: #0072ff; font-weight: bold; font-size: 14px;">✔</span> 180-second live stage
+                      <span style="color: #0072ff; font-weight: bold; font-size: 14px;">✔</span> live stage
                       pitch and presentation spotlight
                     </li>
                     <li style="margin-bottom: 8px; display: flex; align-items: center; gap: 10px;">
@@ -3721,8 +3721,7 @@
             <div class="sbs-pane-form-card">
               <h3>Reserve Early Access</h3>
               <p>Lock in your eligibility for a 50% discount. No credit card or payment required today.</p>
-              <form
-                onsubmit="alert('Thank you for your interest! Your free Early Bird access has been successfully reserved. We will contact you once ticket sales officially open.'); event.preventDefault();">
+              <form onsubmit="handleFormSubmit(event, 'Reserve Early Access')">
                 <div class="sbs-form-group">
                   <label>Full Name *</label>
                   <input type="text" placeholder="Enter attendee name" required />
@@ -3910,17 +3909,7 @@
         }
       }
 
-      // Interactive Form Submission Success Modal/Alert
-      function handleFormSubmit(event, category) {
-        event.preventDefault();
-        const form = event.target;
 
-        // Simulate beautiful alert notification
-        alert(`🎉 Success! Your ${category} request has been submitted successfully.\n\nOur corporate alliance team will contact you shortly.`);
-
-        // Reset form fields
-        form.reset();
-      }
 
       // Set default tab on load to Award Nominations
       document.addEventListener('DOMContentLoaded', () => {

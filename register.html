@@ -926,7 +926,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <h2 style="font-size: 32px; color: #0c1a30 !important; font-weight: 800; margin-bottom: 12px;">Reserve Your Early Access</h2>
 <p style="color: #475569; font-size: 15px; margin: 0;">Lock in your eligibility for a 50% discount. No credit card or payment required today.</p>
 </div>
-<form action="#" method="POST" style="display: grid; gap: 24px;" onsubmit="alert('Thank you for your interest! Your free Early Bird access has been successfully reserved. We will contact you once ticket sales officially open.'); event.preventDefault();">
+<form action="#" method="POST" style="display: grid; gap: 24px;" onsubmit="handleFormSubmit(event, 'Early Bird Ticket Registration')">
 <div class="sbs-form-grid-row" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px;">
 <div>
 <label style="display: block; font-weight: 600; font-size: 14px; color: #0c1a30; margin-bottom: 8px;">Full Name *</label>
