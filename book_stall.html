@@ -291,7 +291,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <link href="https://sbs2026.org/wp-content/uploads/2026/02/yes2026-logo--300x300.webp" rel="icon" sizes="192x192"/>
 <link href="https://sbs2026.org/wp-content/uploads/2026/02/yes2026-logo--300x300.webp" rel="apple-touch-icon"/>
 <meta content="https://sbs2026.org/wp-content/uploads/2026/02/yes2026-logo--300x300.webp" name="msapplication-TileImage"/>
-<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&amp;family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/><link href="assets/css/sbs-theme.css" rel="stylesheet"/><script defer src="assets/js/sbs-theme.js"></script></head>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&amp;family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/><link href="assets/css/sbs-theme.css" rel="stylesheet"/><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script src="assets/js/supabase.js"></script><script defer src="assets/js/sbs-theme.js"></script></head>
 <body class="home wp-singular page-template-default page page-id-1786 wp-custom-logo wp-theme-hello-elementor wp-child-theme-hello-elementor-child theme-hello-elementor woocommerce-no-js elementor-default elementor-kit-16 elementor-page elementor-page-1786">
 <header class="elementor elementor-34 elementor-location-header" data-elementor-id="34" data-elementor-post-type="elementor_library" data-elementor-type="header">
 <div class="elementor-element elementor-element-687c076 e-con-full e-flex e-con e-parent" data-e-type="container" data-element_type="container" data-id="687c076">
@@ -554,31 +554,31 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px;">
 <div>
 <label style="display: block; font-weight: 600; font-size: 14px; color: #0c1a30; margin-bottom: 8px;">Company / Brand Name *</label>
-<input placeholder="Enter company name" required="" style="box-sizing: border-box; width: 100%;" type="text"/>
+<input name="company_name" placeholder="Enter company name" required="" style="box-sizing: border-box; width: 100%;" type="text"/>
 </div>
 <div>
 <label style="display: block; font-weight: 600; font-size: 14px; color: #0c1a30; margin-bottom: 8px;">Website URL</label>
-<input placeholder="https://example.com" style="box-sizing: border-box; width: 100%;" type="url"/>
+<input name="website_url" placeholder="https://example.com" style="box-sizing: border-box; width: 100%;" type="url"/>
 </div>
 </div>
 <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px;">
 <div>
 <label style="display: block; font-weight: 600; font-size: 14px; color: #0c1a30; margin-bottom: 8px;">Contact Person *</label>
-<input placeholder="Enter contact person name" required="" style="box-sizing: border-box; width: 100%;" type="text"/>
+<input name="contact_person" placeholder="Enter contact person name" required="" style="box-sizing: border-box; width: 100%;" type="text"/>
 </div>
 <div>
 <label style="display: block; font-weight: 600; font-size: 14px; color: #0c1a30; margin-bottom: 8px;">Email Address *</label>
-<input placeholder="Enter email address" required="" style="box-sizing: border-box; width: 100%;" type="email"/>
+<input name="email" placeholder="Enter email address" required="" style="box-sizing: border-box; width: 100%;" type="email"/>
 </div>
 </div>
 <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px;">
 <div>
 <label style="display: block; font-weight: 600; font-size: 14px; color: #0c1a30; margin-bottom: 8px;">Phone Number *</label>
-<input placeholder="Enter phone number" required="" style="box-sizing: border-box; width: 100%;" type="tel"/>
+<input name="phone" placeholder="Enter phone number" required="" style="box-sizing: border-box; width: 100%;" type="tel"/>
 </div>
 <div>
 <label style="display: block; font-weight: 600; font-size: 14px; color: #0c1a30; margin-bottom: 8px;">Stall Package Preference *</label>
-<select required="" style="box-sizing: border-box; width: 100%;">
+<select name="package_preference" required="" style="box-sizing: border-box; width: 100%;">
 <option value="">Select a stall package</option>
 <option value="pod">Startup Pod (Basic)</option>
 <option value="executive">Executive Stall (Standard)</option>
@@ -588,7 +588,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 </div>
 <div>
 <label style="display: block; font-weight: 600; font-size: 14px; color: #0c1a30; margin-bottom: 8px;">Theme Pavilion Zone Preference *</label>
-<select required="" style="box-sizing: border-box; width: 100%;">
+<select name="pavilion_zone" required="" style="box-sizing: border-box; width: 100%;">
 <option value="">Select a theme pavilion zone</option>
 <option value="ai">AI &amp; IT Automation Pavilion</option>
 <option value="fintech">Fintech &amp; Banking Pavilion</option>
@@ -600,7 +600,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 </div>
 <div>
 <label style="display: block; font-weight: 600; font-size: 14px; color: #0c1a30; margin-bottom: 8px;">Specific Requirements / Booth Displays</label>
-<textarea placeholder="Briefly describe what you will showcase or any specific power/display requirements" rows="4" style="box-sizing: border-box; width: 100%; border-radius: 8px; border: 1px solid #cbd5e1; padding: 12px 16px; font-family: inherit; font-size: 15px;"></textarea>
+<textarea name="specific_requirements" placeholder="Briefly describe what you will showcase or any specific power/display requirements" rows="4" style="box-sizing: border-box; width: 100%; border-radius: 8px; border: 1px solid #cbd5e1; padding: 12px 16px; font-family: inherit; font-size: 15px;"></textarea>
 </div>
 <div style="text-align: center; margin-top: 10px;">
 <button class="yes2026-btn yes2026-btn-primary" style="padding: 16px 40px; font-size: 16px; min-width: 250px; background: var(--sbs-gradient) !important; color: #ffffff !important; border-radius: 30px !important;" type="submit">Submit Stall Booking Request</button>

@@ -43,16 +43,20 @@
     }
 })();
 
-// Escape helper for HTML formatting in Telegram messages
-function escapeHTML(text) {
-    if (text === null || text === undefined) return '';
-    return String(text)
-        .replace(/&/g, '&amp;')
-        .replace(/</g, '&lt;')
-        .replace(/>/g, '&gt;');
-}
+// Category to Supabase table mapping
+const CATEGORY_TABLE_MAP = {
+    'Early Bird Ticket Registration': 'ticket_registrations',
+    'Reserve Early Access': 'ticket_registrations',
+    'Exhibitor Registration': 'exhibitor_bookings',
+    'Award Nomination': 'award_nominations',
+    'Speaker & Stage Pitch Application': 'presenter_applications',
+    'Panelist Application': 'presenter_applications',
+    'Sponsorship Inquiry': 'sponsorship_inquiries',
+    'Designated Partner Registration': 'partnership_registrations',
+    'Startup Launch Platform Application': 'launch_platform_applications'
+};
 
-// Centralized Telegram form submission handler
+// Centralized form submission handler hooking into Supabase
 window.handleFormSubmit = async function(event, category) {
     event.preventDefault();
     const form = event.target;
@@ -69,92 +73,172 @@ window.handleFormSubmit = async function(event, category) {
     }
     
     try {
-        const TELEGRAM_BOT_TOKEN = '8942733766:AAHelyWJHJ57zf2LGNeX7tCzxNj_X7gqxX4';
-        const TELEGRAM_CHAT_ID = '8123459698';
-        
-        let messageText = `<b>📬 New Form Submission</b>\n`;
-        messageText += `<b>Category:</b> ${escapeHTML(category)}\n`;
-        messageText += `<b>Page:</b> ${escapeHTML(window.location.href)}\n`;
-        messageText += `<b>Time:</b> ${escapeHTML(new Date().toLocaleString())}\n`;
-        messageText += `-----------------------------------\n\n`;
-        
+        const dbTable = CATEGORY_TABLE_MAP[category];
+        if (!dbTable) {
+            throw new Error(`Unmapped submission category: ${category}`);
+        }
+
+        // 1. Gather form fields matching schema name attributes
+        const formData = {};
         const elements = form.querySelectorAll('input, select, textarea');
+        
         elements.forEach(el => {
             if (el.type === 'submit' || el.type === 'button' || el.type === 'image') return;
-            
-            let val = '';
-            if (el.type === 'checkbox') {
-                val = el.checked ? 'Checked' : 'Unchecked';
-            } else if (el.type === 'radio') {
-                if (!el.checked) return;
-                val = el.value;
-            } else {
-                val = el.value;
-            }
-            
-            if (val === undefined || val.trim() === '') {
-                val = 'N/A';
-            }
-            
-            let labelText = '';
-            
-            // Find sibling label
-            const parent = el.parentElement;
-            if (parent) {
-                const label = parent.querySelector('label');
-                if (label) {
-                    labelText = label.innerText.trim();
+            if (el.name) {
+                if (el.type === 'checkbox') {
+                    formData[el.name] = el.checked;
+                } else if (el.type === 'radio') {
+                    if (el.checked) formData[el.name] = el.value;
+                } else if (el.type === 'number') {
+                    formData[el.name] = parseInt(el.value, 10) || 0;
+                } else {
+                    formData[el.name] = el.value;
                 }
             }
-            
-            // Fallback to placeholder
-            if (!labelText && el.placeholder) {
-                labelText = el.placeholder.trim();
-            }
-            
-            // Fallback to name or type
-            if (!labelText) {
-                labelText = el.name || el.type || 'Field';
-            }
-            
-            labelText = labelText.replace(/[\*\:]\s*$/, '').trim();
-            
-            messageText += `<b>${escapeHTML(labelText)}:</b> ${escapeHTML(val)}\n`;
         });
-        
-        const response = await fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                chat_id: TELEGRAM_CHAT_ID,
-                text: messageText,
-                parse_mode: 'HTML'
-            })
-        });
-        
-        if (!response.ok) {
-            throw new Error(`Telegram API responded with status ${response.status}`);
+
+        // Add default columns for public submission
+        formData.source = 'website';
+        formData.submission_status = 'new';
+        formData.is_deleted = false;
+
+        // Custom mapping specifics based on category
+        if (category === 'Speaker & Stage Pitch Application') {
+            formData.role_type = form.querySelector('[name="role_type"]')?.value || 'speaker';
+        } else if (category === 'Panelist Application') {
+            formData.role_type = form.querySelector('[name="role_type"]')?.value || 'panelist';
+        } else if (category === 'Early Bird Ticket Registration') {
+            formData.source_page = 'register_page';
+            formData.quantity = 1;
+        } else if (category === 'Reserve Early Access') {
+            formData.source_page = 'sponsorship_page';
         }
-        
-        if (submitBtn) {
-            submitBtn.disabled = false;
-            submitBtn.innerText = originalBtnText;
+
+        const email = formData.email;
+
+        // 2. Duplicate email check
+        if (email && window.supabaseAPI) {
+            const isDuplicate = await window.supabaseAPI.checkDuplicateEmail(dbTable, email);
+            if (isDuplicate) {
+                alert(`❌ Duplicate Application:\nAn application with email "${email}" has already been submitted.`);
+                if (submitBtn) {
+                    submitBtn.disabled = false;
+                    submitBtn.innerText = originalBtnText;
+                }
+                form.removeAttribute('data-submitting');
+                return;
+            }
         }
-        form.removeAttribute('data-submitting');
-        
-        alert(`🎉 Success! Your ${category} request has been submitted successfully.\n\nOur team will contact you shortly.`);
+
+        // 3. Send data to Supabase Database
+        if (window.supabaseAPI) {
+            const { data, error } = await window.supabaseAPI.submitFormToSupabase(dbTable, formData);
+            if (error) throw error;
+        } else {
+            console.warn("Supabase SDK API wrapper is not initialized. Skipping database write.");
+        }
+
+        // Success Alert and Reset Form
+        alert("Thank you. Your submission has been received successfully.");
         form.reset();
         
     } catch (error) {
-        console.error('Error submitting form:', error);
+        console.error('Submission error:', error);
+        alert(`❌ Submission error: ${error.message || error}. Please try again later.`);
+    } finally {
         if (submitBtn) {
             submitBtn.disabled = false;
             submitBtn.innerText = originalBtnText;
         }
         form.removeAttribute('data-submitting');
-        alert(`❌ Submission error: ${error.message || error}. Please try again later.`);
     }
 };
 
+// Dynamic File Uploading wrapper injection
+document.addEventListener('DOMContentLoaded', () => {
+    const urlInputs = document.querySelectorAll('input[type="url"], input[placeholder*="URL"], input[placeholder*="Link"], input[placeholder*="Deck"]');
+    
+    urlInputs.forEach(input => {
+        // Flexbox wrapper setup
+        const wrapper = document.createElement('div');
+        wrapper.style.display = 'flex';
+        wrapper.style.alignItems = 'center';
+        wrapper.style.width = '100%';
+        wrapper.style.gap = '8px';
+        wrapper.style.marginTop = '4px';
+        
+        // Setup upload trigger button matching theme styles
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.innerText = '📤 Upload File';
+        btn.style.padding = '10px 16px';
+        btn.style.fontSize = '13px';
+        btn.style.fontWeight = '600';
+        btn.style.borderRadius = '8px';
+        btn.style.border = '1px solid #cbd5e1';
+        btn.style.background = '#f8fafc';
+        btn.style.color = '#0c1a30';
+        btn.style.cursor = 'pointer';
+        btn.style.whiteSpace = 'nowrap';
+        btn.style.transition = 'all 0.2s';
+        
+        btn.onmouseover = () => { btn.style.background = '#cbd5e1'; };
+        btn.onmouseout = () => { btn.style.background = '#f8fafc'; };
+        
+        // Rearrange DOM nodes
+        input.parentNode.insertBefore(wrapper, input);
+        wrapper.appendChild(input);
+        wrapper.appendChild(btn);
+        
+        // Connect Upload click trigger
+        btn.addEventListener('click', () => {
+            const fileInput = document.createElement('input');
+            fileInput.type = 'file';
+            fileInput.accept = '.pdf,.ppt,.pptx,.png,.jpg,.jpeg,.doc,.docx';
+            
+            fileInput.onchange = async (e) => {
+                const file = e.target.files[0];
+                if (!file) return;
+                
+                // Block extremely large uploads (e.g. >15MB)
+                if (file.size > 15 * 1024 * 1024) {
+                    alert('❌ File exceeds limit: Maximum size allowed is 15MB.');
+                    return;
+                }
+                
+                btn.innerText = 'Uploading...';
+                btn.disabled = true;
+                
+                // Select appropriate bucket matching properties
+                let bucket = 'pitch_decks';
+                const inputName = (input.name || '').toLowerCase();
+                const placeholderText = (input.placeholder || '').toLowerCase();
+                
+                if (inputName.includes('logo') || placeholderText.includes('logo')) {
+                    bucket = 'company_logos';
+                } else if (inputName.includes('profile') || inputName.includes('speaker') || placeholderText.includes('profile')) {
+                    bucket = 'speaker_profiles';
+                } else if (inputName.includes('award') || inputName.includes('document') || placeholderText.includes('document')) {
+                    bucket = 'award_documents';
+                }
+                
+                try {
+                    if (!window.supabaseAPI) {
+                        throw new Error("Supabase integration libraries not loaded.");
+                    }
+                    const publicUrl = await window.supabaseAPI.uploadFileToStorage(bucket, file);
+                    input.value = publicUrl;
+                    btn.innerText = '✅ Uploaded';
+                    btn.style.background = '#22c55e';
+                    btn.style.color = '#ffffff';
+                } catch (err) {
+                    alert('❌ Upload failed: ' + (err.message || err));
+                    btn.innerText = '📤 Upload File';
+                } finally {
+                    btn.disabled = false;
+                }
+            };
+            fileInput.click();
+        });
+    });
+});

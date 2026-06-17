@@ -1668,6 +1668,8 @@
     href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&amp;family=Inter:wght@400;500;600;700&amp;display=swap"
     rel="stylesheet" />
   <link href="assets/css/sbs-theme.css" rel="stylesheet" />
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="assets/js/supabase.js"></script>
   <script defer src="assets/js/sbs-theme.js"></script>
 </head>
 
@@ -2912,16 +2914,16 @@
               <form onsubmit="handleFormSubmit(event, 'Award Nomination')">
                 <div class="sbs-form-group">
                   <label>Full Name *</label>
-                  <input type="text" placeholder="Enter nominee name" required />
+                  <input name="nominee_name" type="text" placeholder="Enter nominee name" required />
                 </div>
                 <div class="sbs-form-group">
                   <label>Company / Startup Name *</label>
-                  <input type="text" placeholder="Enter company name" required />
+                  <input name="company_name" type="text" placeholder="Enter company name" required />
                 </div>
                 <div class="sbs-form-row">
                   <div class="sbs-form-group">
                     <label>Nomination Category *</label>
-                    <select required style="box-sizing: border-box; width: 100%;">
+                    <select name="category" required style="box-sizing: border-box; width: 100%;">
                       <option value="">Select category</option>
                       <option value="emerging">Emerging Startup</option>
                       <option value="young">Young Entrepreneur</option>
@@ -2932,20 +2934,20 @@
                   </div>
                   <div class="sbs-form-group">
                     <label>Professional Email *</label>
-                    <input type="email" placeholder="nominee@company.com" required />
+                    <input name="email" type="email" placeholder="nominee@company.com" required />
                   </div>
                 </div>
                 <div class="sbs-form-group">
                   <label>Contact Number *</label>
-                  <input type="tel" placeholder="+91 XXXXX XXXXX" required />
+                  <input name="phone" type="tel" placeholder="+91 XXXXX XXXXX" required />
                 </div>
                 <div class="sbs-form-group">
                   <label>Website / Pitch Deck URL</label>
-                  <input type="text" placeholder="https://mycompany.com" />
+                  <input name="website_deck_url" type="text" placeholder="https://mycompany.com" />
                 </div>
                 <div class="sbs-form-group">
                   <label>Why should this nominee win? *</label>
-                  <textarea placeholder="Provide key achievements, scale metrics, or innovations..." rows="4" required
+                  <textarea name="why_nominee_should_win" placeholder="Provide key achievements, scale metrics, or innovations..." rows="4" required
                     style="box-sizing: border-box; width: 100%; border-radius: 8px; border: 1px solid #cbd5e1; padding: 12px 16px; font-family: inherit; font-size: 15px;"></textarea>
                 </div>
                 <button type="submit" style="width: 100%; padding: 14px; font-size: 14px; margin-top: 10px;">Apply &amp;
@@ -3057,7 +3059,7 @@
               <form onsubmit="handleFormSubmit(event, 'Speaker & Stage Pitch Application')">
                 <div class="sbs-form-group">
                   <label>Applicant Role Type *</label>
-                  <select required style="box-sizing: border-box; width: 100%;">
+                  <select name="role_type" required style="box-sizing: border-box; width: 100%;">
                     <option value="">-- Select Participation Type --</option>
                     <option value="speaker">Summit Speaker Slot</option>
                     <option value="pitch">Stage Pitch Exhibitor</option>
@@ -3065,33 +3067,33 @@
                 </div>
                 <div class="sbs-form-group">
                   <label>Presenter Full Name *</label>
-                  <input type="text" placeholder="Enter name" required />
+                  <input name="full_name" type="text" placeholder="Enter name" required />
                 </div>
                 <div class="sbs-form-group">
                   <label>Startup / Company Name *</label>
-                  <input type="text" placeholder="Enter company name" required />
+                  <input name="company_name" type="text" placeholder="Enter company name" required />
                 </div>
                 <div class="sbs-form-row">
                   <div class="sbs-form-group">
                     <label>Designation *</label>
-                    <input type="text" placeholder="e.g. Founder &amp; CEO" required />
+                    <input name="designation" type="text" placeholder="e.g. Founder &amp; CEO" required />
                   </div>
                   <div class="sbs-form-group">
                     <label>Professional Email *</label>
-                    <input type="email" placeholder="ceo@startup.com" required />
+                    <input name="email" type="email" placeholder="ceo@startup.com" required />
                   </div>
                 </div>
                 <div class="sbs-form-group">
                   <label>Contact Number *</label>
-                  <input type="tel" placeholder="Enter contact number" required />
+                  <input name="phone" type="tel" placeholder="Enter contact number" required />
                 </div>
                 <div class="sbs-form-group">
                   <label>Presentation / Pitch Deck URL *</label>
-                  <input type="text" placeholder="Link to Pitch Deck or Speaker Profile" required />
+                  <input name="deck_or_portfolio_url" type="text" placeholder="Link to Pitch Deck or Speaker Profile" required />
                 </div>
                 <div class="sbs-form-group">
                   <label>Outline / Key Objectives *</label>
-                  <textarea placeholder="Outline your speaking topic or pitch summary..." rows="4" required
+                  <textarea name="details" placeholder="Outline your speaking topic or pitch summary..." rows="4" required
                     style="box-sizing: border-box; width: 100%; border-radius: 8px; border: 1px solid #cbd5e1; padding: 12px 16px; font-family: inherit; font-size: 15px;"></textarea>
                 </div>
                 <button type="submit" style="width: 100%; padding: 14px; font-size: 14px; margin-top: 10px;">Submit
@@ -3202,7 +3204,7 @@
               <form onsubmit="handleFormSubmit(event, 'Panelist Application')">
                 <div class="sbs-form-group">
                   <label>Applicant Role Type *</label>
-                  <select required style="box-sizing: border-box; width: 100%;">
+                  <select name="role_type" required style="box-sizing: border-box; width: 100%;">
                     <option value="">-- Select Participation Type --</option>
                     <option value="panelist">Summit Panelist</option>
                     <option value="moderator">Session Moderator</option>
@@ -3210,29 +3212,29 @@
                 </div>
                 <div class="sbs-form-group">
                   <label>Full Name *</label>
-                  <input type="text" placeholder="Enter nominee name" required />
+                  <input name="full_name" type="text" placeholder="Enter nominee name" required />
                 </div>
                 <div class="sbs-form-group">
                   <label>Company / Organization Name *</label>
-                  <input type="text" placeholder="Enter company name" required />
+                  <input name="company_name" type="text" placeholder="Enter company name" required />
                 </div>
                 <div class="sbs-form-row">
                   <div class="sbs-form-group">
                     <label>Job Title / Designation *</label>
-                    <input type="text" placeholder="e.g. Chief Product Officer" required />
+                    <input name="designation" type="text" placeholder="e.g. Chief Product Officer" required />
                   </div>
                   <div class="sbs-form-group">
                     <label>Professional Email *</label>
-                    <input type="email" placeholder="name@company.com" required />
+                    <input name="email" type="email" placeholder="name@company.com" required />
                   </div>
                 </div>
                 <div class="sbs-form-group">
                   <label>Contact Number *</label>
-                  <input type="tel" placeholder="Enter contact number" required />
+                  <input name="phone" type="tel" placeholder="Enter contact number" required />
                 </div>
                 <div class="sbs-form-group">
                   <label>Preferred Discussion Topic *</label>
-                  <select required style="box-sizing: border-box; width: 100%;">
+                  <select name="preferred_topic" required style="box-sizing: border-box; width: 100%;">
                     <option value="">Select Topic Area</option>
                     <option value="ai-tech">Artificial Intelligence &amp; SaaS</option>
                     <option value="d2c-scale">D2C, Logistics &amp; Branding</option>
@@ -3243,7 +3245,7 @@
                 </div>
                 <div class="sbs-form-group">
                   <label>Brief Bio &amp; Key Speaking Experience *</label>
-                  <textarea
+                  <textarea name="details"
                     placeholder="Tell us about your background, key insights, and link to past panel videos or speaking profiles..."
                     rows="4" required
                     style="box-sizing: border-box; width: 100%; border-radius: 8px; border: 1px solid #cbd5e1; padding: 12px 16px; font-family: inherit; font-size: 15px;"></textarea>
@@ -3359,16 +3361,16 @@
               <form onsubmit="handleFormSubmit(event, 'Sponsorship Inquiry')">
                 <div class="sbs-form-group">
                   <label>Full Name *</label>
-                  <input type="text" placeholder="John Doe" required />
+                  <input name="full_name" type="text" placeholder="John Doe" required />
                 </div>
                 <div class="sbs-form-group">
                   <label>Company Name *</label>
-                  <input type="text" placeholder="Enter organization name" required />
+                  <input name="company_name" type="text" placeholder="Enter organization name" required />
                 </div>
                 <div class="sbs-form-row">
                   <div class="sbs-form-group">
                     <label>Interested Package *</label>
-                    <select required style="box-sizing: border-box; width: 100%;">
+                    <select name="interested_package" required style="box-sizing: border-box; width: 100%;">
                       <option value="">Select package</option>
                       <option value="title">Title Sponsor (₹45,00,000)</option>
                       <option value="powered">Powered Sponsor (₹38,00,000)</option>
@@ -3378,16 +3380,16 @@
                   </div>
                   <div class="sbs-form-group">
                     <label>Professional Email *</label>
-                    <input type="email" placeholder="email@company.com" required />
+                    <input name="email" type="email" placeholder="email@company.com" required />
                   </div>
                 </div>
                 <div class="sbs-form-group">
                   <label>Contact Number *</label>
-                  <input type="tel" placeholder="Enter phone number" required />
+                  <input name="phone" type="tel" placeholder="Enter phone number" required />
                 </div>
                 <div class="sbs-form-group">
                   <label>Brief Message / Branding Goals *</label>
-                  <textarea placeholder="Describe your corporate objectives..." rows="4" required
+                  <textarea name="message" placeholder="Describe your corporate objectives..." rows="4" required
                     style="box-sizing: border-box; width: 100%; border-radius: 8px; border: 1px solid #cbd5e1; padding: 12px 16px; font-family: inherit; font-size: 15px;"></textarea>
                 </div>
                 <button type="submit" style="width: 100%; padding: 14px; font-size: 14px; margin-top: 10px;">Request
@@ -3539,17 +3541,10 @@
                         Partner 14</div>
                       <div class="sbs-partner-name">Beverages Partner</div>
                     </div>
-                  </div>
-                </div>
-              </div>
-
-              <div class="sbs-pane-form-card" style="position: relative; top: 0;">
-                <h3>Partner Registration</h3>
-                <p>Select your category and submit details to register as an official summit partner.</p>
-                <form onsubmit="handleFormSubmit(event, 'Designated Partner Registration')">
+                             <form onsubmit="handleFormSubmit(event, 'Designated Partner Registration')">
                   <div class="sbs-form-group">
                     <label>Collaboration Category *</label>
-                    <select required style="box-sizing: border-box; width: 100%;">
+                    <select name="collaboration_category" required style="box-sizing: border-box; width: 100%;">
                       <option value="">-- Select Category --</option>
                       <option value="production">Partner 01: Production Partner</option>
                       <option value="gifting">Partner 02: Gifting Partner</option>
@@ -3569,29 +3564,29 @@
                   </div>
                   <div class="sbs-form-group">
                     <label>Company / Agency Name *</label>
-                    <input type="text" placeholder="Enter company name" required />
+                    <input name="company_name" type="text" placeholder="Enter company name" required />
                   </div>
                   <div class="sbs-form-group">
                     <label>Contact Person Full Name *</label>
-                    <input type="text" placeholder="Enter contact name" required />
+                    <input name="contact_person" type="text" placeholder="Enter contact name" required />
                   </div>
                   <div class="sbs-form-row">
                     <div class="sbs-form-group">
                       <label>Professional Email *</label>
-                      <input type="email" placeholder="partner@company.com" required />
+                      <input name="email" type="email" placeholder="partner@company.com" required />
                     </div>
                     <div class="sbs-form-group">
                       <label>Contact Number *</label>
-                      <input type="tel" placeholder="Enter contact number" required />
+                      <input name="phone" type="tel" placeholder="Enter contact number" required />
                     </div>
                   </div>
                   <div class="sbs-form-group">
                     <label>Website / Portfolio URL</label>
-                    <input type="url" placeholder="https://mycompany.com" />
+                    <input name="portfolio_url" type="url" placeholder="https://mycompany.com" />
                   </div>
                   <div class="sbs-form-group">
                     <label>Collaboration Proposal *</label>
-                    <textarea placeholder="Outline your services, proposed deliverables, and past event experience..."
+                    <textarea name="proposal" placeholder="Outline your services, proposed deliverables, and past event experience..."
                       rows="4" required
                       style="box-sizing: border-box; width: 100%; border-radius: 8px; border: 1px solid #cbd5e1; padding: 12px 16px; font-family: inherit; font-size: 15px;"></textarea>
                   </div>
@@ -3724,12 +3719,12 @@
               <form onsubmit="handleFormSubmit(event, 'Reserve Early Access')">
                 <div class="sbs-form-group">
                   <label>Full Name *</label>
-                  <input type="text" placeholder="Enter attendee name" required />
+                  <input name="full_name" type="text" placeholder="Enter attendee name" required />
                 </div>
                 <div class="sbs-form-row">
                   <div class="sbs-form-group">
                     <label>Select Ticket Tier *</label>
-                    <select required style="box-sizing: border-box; width: 100%;">
+                    <select name="pass_tier" required style="box-sizing: border-box; width: 100%;">
                       <option value="">Select ticket pass</option>
                       <option value="silver_general">Silver General (Early: ₹5,000)</option>
                       <option value="silver_pro">Silver Pro (Early: ₹7,500)</option>
@@ -3744,20 +3739,20 @@
                   </div>
                   <div class="sbs-form-group">
                     <label>Number of Passes *</label>
-                    <input type="number" min="1" max="20" value="1" required />
+                    <input name="quantity" type="number" min="1" max="20" value="1" required />
                   </div>
                 </div>
                 <div class="sbs-form-group">
                   <label>Professional Email *</label>
-                  <input type="email" placeholder="attendee@company.com" required />
+                  <input name="email" type="email" placeholder="attendee@company.com" required />
                 </div>
                 <div class="sbs-form-group">
                   <label>Contact Number *</label>
-                  <input type="tel" placeholder="Enter contact number" required />
+                  <input name="phone" type="tel" placeholder="Enter contact number" required />
                 </div>
                 <div class="sbs-form-group">
                   <label>Organization / Startup Name</label>
-                  <input type="text" placeholder="Enter company name" />
+                  <input name="organization_name" type="text" placeholder="Enter company name" />
                 </div>
                 <button type="submit" style="width: 100%; padding: 14px; font-size: 14px; margin-top: 10px;">Secure 50%
                   Early Access Reservation</button>
@@ -3829,16 +3824,16 @@
               <form onsubmit="handleFormSubmit(event, 'Startup Launch Platform Application')">
                 <div class="sbs-form-group">
                   <label>Founder Name *</label>
-                  <input type="text" placeholder="Enter founder name" required />
+                  <input name="founder_name" type="text" placeholder="Enter founder name" required />
                 </div>
                 <div class="sbs-form-group">
                   <label>Startup Name *</label>
-                  <input type="text" placeholder="Enter startup name" required />
+                  <input name="startup_name" type="text" placeholder="Enter startup name" required />
                 </div>
                 <div class="sbs-form-row">
                   <div class="sbs-form-group">
                     <label>Current Phase *</label>
-                    <select required style="box-sizing: border-box; width: 100%;">
+                    <select name="current_phase" required style="box-sizing: border-box; width: 100%;">
                       <option value="">Select Stage</option>
                       <option value="mvp">MVP Ready</option>
                       <option value="beta">Beta Phase / Early Adopters</option>
@@ -3848,20 +3843,20 @@
                   </div>
                   <div class="sbs-form-group">
                     <label>Professional Email *</label>
-                    <input type="email" placeholder="founder@company.com" required />
+                    <input name="email" type="email" placeholder="founder@company.com" required />
                   </div>
                 </div>
                 <div class="sbs-form-group">
                   <label>Contact Number *</label>
-                  <input type="tel" placeholder="Enter contact number" required />
+                  <input name="phone" type="tel" placeholder="Enter contact number" required />
                 </div>
                 <div class="sbs-form-group">
                   <label>Website / Demo URL *</label>
-                  <input type="text" placeholder="https://myproduct.com" required />
+                  <input name="website_demo_url" type="text" placeholder="https://myproduct.com" required />
                 </div>
                 <div class="sbs-form-group">
                   <label>Product Description &amp; Launch Focus *</label>
-                  <textarea
+                  <textarea name="product_description"
                     placeholder="Describe the product, market problem solved, and details of the stage launch plan..."
                     rows="4" required
                     style="box-sizing: border-box; width: 100%; border-radius: 8px; border: 1px solid #cbd5e1; padding: 12px 16px; font-family: inherit; font-size: 15px;"></textarea>
