@@ -639,12 +639,17 @@
 
                 if (error) throw error;
 
-                showToast("Sign up successful! Please check your email for the confirmation link.", "success");
-                
-                // Redirect user to email verification landing page after 2 seconds
-                setTimeout(() => {
-                    window.location.href = `verify-email.html?email=${encodeURIComponent(email)}`;
-                }, 2000);
+                if (data.session) {
+                    showToast("Registration successful! Redirecting to dashboard...", "success");
+                    setTimeout(() => {
+                        window.location.href = 'index.html';
+                    }, 2000);
+                } else {
+                    showToast("Registration successful! Redirecting to login...", "success");
+                    setTimeout(() => {
+                        window.location.href = `login.html?email=${encodeURIComponent(email)}`;
+                    }, 2000);
+                }
 
             } catch (err) {
                 console.error("Sign up error:", err);

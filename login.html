@@ -356,8 +356,13 @@
     <script src="assets/js/auth.js"></script>
 
     <script>
-        // Redirect if already logged in
+        // Redirect if already logged in or fill email from query param
         document.addEventListener('DOMContentLoaded', async () => {
+            const params = new URLSearchParams(window.location.search);
+            const emailParam = params.get('email');
+            if (emailParam) {
+                document.getElementById('email').value = emailParam;
+            }
             if (window.authAPI) {
                 await window.authAPI.redirectIfAuthorized();
             }
@@ -435,18 +440,14 @@
 
                 showToast("Login successful! Redirecting...", "success");
 
-                // Get User Profile to verify confirmation status
+                // Get User Profile to redirect to their dashboard
                 if (window.authAPI) {
                     const profile = await window.authAPI.getUserProfile(data.user.id);
                     
                     setTimeout(() => {
                         if (profile) {
-                            if (!profile.is_verified) {
-                                window.location.href = `verify-email.html?email=${encodeURIComponent(email)}`;
-                            } else {
-                                const dashboard = window.authAPI.ROLE_DASHBOARD_MAP[profile.role] || 'attendee-dashboard.html';
-                                window.location.href = dashboard;
-                            }
+                            const dashboard = window.authAPI.ROLE_DASHBOARD_MAP[profile.role] || 'attendee-dashboard.html';
+                            window.location.href = dashboard;
                         } else {
                             window.location.href = 'login.html';
                         }

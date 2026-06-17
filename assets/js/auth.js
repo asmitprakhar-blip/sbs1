@@ -82,13 +82,6 @@ async function redirectIfUnauthorized(allowedRoles = []) {
         return;
     }
     
-    // Redirect if email is not verified yet
-    if (!profile.is_verified) {
-        if (!window.location.pathname.includes('verify-email.html')) {
-            window.location.href = 'verify-email.html';
-            return;
-        }
-    }
     
     // Block suspended accounts
     if (profile.account_status === 'suspended') {
@@ -111,12 +104,7 @@ async function redirectIfAuthorized() {
     if (user) {
         const profile = await getUserProfile(user.id);
         if (profile) {
-            if (!profile.is_verified) {
-                if (!window.location.pathname.includes('verify-email.html')) {
-                    window.location.href = 'verify-email.html';
-                }
-                return;
-            }
+            
             if (profile.account_status === 'suspended') return;
             
             const dashboard = ROLE_DASHBOARD_MAP[profile.role] || 'attendee-dashboard.html';

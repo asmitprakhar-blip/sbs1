@@ -124,8 +124,8 @@ document.addEventListener('DOMContentLoaded', async () => {
         // Verify user profile status
         if (window.authAPI) {
             const profile = await window.authAPI.getUserProfile(user.id);
-            if (!profile || !profile.is_verified) {
-                window.location.href = `verify-email.html?email=${encodeURIComponent(user.email)}`;
+            if (!profile) {
+                window.location.href = 'index.html';
                 return;
             }
             if (profile.account_status === 'suspended') {
@@ -147,21 +147,24 @@ document.addEventListener('DOMContentLoaded', async () => {
             const mainContent = document.getElementById('main-website-content');
             
             if (user) {
-                let verified = true;
+                let hasProfile = true;
                 if (window.authAPI) {
                     const profile = await window.authAPI.getUserProfile(user.id);
-                    if (!profile || !profile.is_verified) {
-                        verified = false;
+                    if (!profile) {
+                        hasProfile = false;
                     }
                 }
                 
-                if (verified) {
+                if (hasProfile) {
                     // Authorized: Show website contents
                     if (gate) gate.style.display = 'none';
                     if (mainContent) mainContent.style.display = 'block';
                 } else {
-                    // Needs verification
-                    window.location.href = `verify-email.html?email=${encodeURIComponent(user.email)}`;
+                    // Sign out and reload if profile is missing
+                    if (window.supabaseClient) {
+                        await window.supabaseClient.auth.signOut();
+                    }
+                    window.location.reload();
                     return;
                 }
             } else {

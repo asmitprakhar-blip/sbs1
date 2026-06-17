@@ -488,16 +488,6 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
                     </button>
                 </form>
                 
-                <!-- Social Auth or Divider -->
-                <div class="auth-divider">
-                    <span>OR</span>
-                </div>
-                
-                <button type="button" class="google-auth-btn" onclick="continueWithGoogle()">
-                    <img src="https://img.icons8.com/color/16/000000/google-logo.png" alt="Google">
-                    <span>CONTINUE WITH GOOGLE</span>
-                </button>
-                
                 <div class="auth-card-footer">
                     <span id="gate-footer-hint">Already have an account? <a href="#" onclick="switchTab('login')">Login</a></span>
                 </div>
@@ -572,25 +562,6 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
         }
     }
 
-    // embedded google redirect login
-    async function continueWithGoogle() {
-        if (!window.supabaseClient) {
-            alert("Database service not initialized.");
-            return;
-        }
-        try {
-            const { error } = await window.supabaseClient.auth.signInWithOAuth({
-                provider: 'google',
-                options: {
-                    redirectTo: 'https://www.prakharenterprises.in/index.html'
-                }
-            });
-            if (error) throw error;
-        } catch (err) {
-            alert("OAuth error: " + err.message);
-        }
-    }
-
     // Form Handlers wireup on DOMContentLoaded
     document.addEventListener('DOMContentLoaded', () => {
         const regForm = document.getElementById('gate-register-form');
@@ -631,8 +602,17 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
                     
                     if (error) throw error;
                     
-                    alert("Sign up successful! Please check your inbox for the email confirmation link.");
-                    window.location.href = `verify-email.html?email=${encodeURIComponent(email)}`;
+                    if (data.session) {
+                        alert("Sign up successful! Redirecting to dashboard...");
+                        window.location.reload();
+                    } else {
+                        alert("Sign up successful! You can now log in with your credentials.");
+                        switchTab('login');
+                        const logEmailInput = document.getElementById('gate-log-email');
+                        if (logEmailInput) logEmailInput.value = email;
+                        submitBtn.disabled = false;
+                        submitBtn.innerHTML = originalText;
+                    }
                 } catch (err) {
                     alert(err.message || "Registration failed. Please try again.");
                     submitBtn.disabled = false;
@@ -663,10 +643,6 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
                     if (window.authAPI) {
                         const profile = await window.authAPI.getUserProfile(data.user.id);
                         if (profile) {
-                            if (!profile.is_verified) {
-                                window.location.href = `verify-email.html?email=${encodeURIComponent(email)}`;
-                                return;
-                            }
                             if (profile.account_status === 'suspended') {
                                 alert("Your account is suspended. Please contact support.");
                                 await window.authAPI.logout();
