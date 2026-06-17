@@ -422,75 +422,31 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
                     <p class="sbs-desc">Join thousands of innovators, investors &amp; industry leaders.</p>
                 </div>
                 
-                <!-- Tab headers -->
-                <div class="auth-tabs">
-                    <button id="tab-register" class="auth-tab active" onclick="switchTab('register')">REGISTER</button>
-                    <button id="tab-login" class="auth-tab" onclick="switchTab('login')">LOGIN</button>
+                <div class="gate-action-buttons" style="display: flex; flex-direction: column; gap: 20px; width: 100%; margin-top: 30px; margin-bottom: 30px;">
+                    <a href="register-account.html" style="text-decoration: none; display: block; width: 100%;">
+                        <button type="button" class="gradient-btn" style="margin: 0; width: 100%; display: flex; align-items: center; justify-content: center; gap: 10px; font-size: 16px; letter-spacing: 0.5px; height: 50px;">
+                            <span>REGISTER NOW</span> <i class="fa-solid fa-user-plus"></i>
+                        </button>
+                    </a>
+                    
+                    <a href="login.html" style="text-decoration: none; display: block; width: 100%;">
+                        <button type="button" class="outline-btn" style="margin: 0; width: 100%; display: flex; align-items: center; justify-content: center; gap: 10px; background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.15); color: #fff; padding: 12px; border-radius: 8px; font-weight: 600; cursor: pointer; transition: all 0.2s; font-size: 16px; height: 50px; font-family: inherit;">
+                            <span>LOGIN TO PORTAL</span> <i class="fa-solid fa-right-to-bracket"></i>
+                        </button>
+                    </a>
                 </div>
                 
-                <!-- Register Form -->
-                <form id="gate-register-form" class="auth-form-panel">
-                    <div class="form-input-group">
-                        <i class="fa-regular fa-user input-icon"></i>
-                        <input type="text" id="gate-reg-name" placeholder="Full Name" required autocomplete="name">
-                    </div>
-                    <div class="form-input-group">
-                        <i class="fa-regular fa-envelope input-icon"></i>
-                        <input type="email" id="gate-reg-email" placeholder="Email Address" required autocomplete="email">
-                    </div>
-                    <div class="form-input-group">
-                        <i class="fa-solid fa-phone input-icon"></i>
-                        <input type="tel" id="gate-reg-phone" placeholder="Phone Number" required autocomplete="tel">
-                    </div>
-                    <div class="form-input-group no-icon">
-                        <select id="gate-reg-role" required>
-                            <option value="" disabled selected>Select Your Role</option>
-                            <option value="attendee">Attendee</option>
-                            <option value="startup">Startup Founder</option>
-                            <option value="investor">Investor</option>
-                            <option value="speaker">Speaker</option>
-                            <option value="sponsor">Sponsor</option>
-                            <option value="exhibitor">Exhibitor</option>
-                        </select>
-                    </div>
-                    <div class="form-input-group">
-                        <i class="fa-solid fa-lock input-icon"></i>
-                        <input type="password" id="gate-reg-password" placeholder="Create Password" required autocomplete="new-password">
-                        <button type="button" class="pwd-toggle-btn" onclick="toggleGatePassword('gate-reg-password', this)">
-                            <i class="fa-regular fa-eye-slash"></i>
-                        </button>
-                    </div>
-                    
-                    <button type="submit" id="gate-reg-btn" class="gradient-btn">
-                        <span>CREATE ACCOUNT</span> <i class="fa-solid fa-arrow-right-long"></i>
-                    </button>
-                </form>
-                
-                <!-- Login Form -->
-                <form id="gate-login-form" class="auth-form-panel" style="display: none;">
-                    <div class="form-input-group">
-                        <i class="fa-regular fa-envelope input-icon"></i>
-                        <input type="email" id="gate-log-email" placeholder="Email Address" required autocomplete="username">
-                    </div>
-                    <div class="form-input-group">
-                        <i class="fa-solid fa-lock input-icon"></i>
-                        <input type="password" id="gate-log-password" placeholder="Password" required autocomplete="current-password">
-                        <button type="button" class="pwd-toggle-btn" onclick="toggleGatePassword('gate-log-password', this)">
-                            <i class="fa-regular fa-eye-slash"></i>
-                        </button>
-                    </div>
-                    <div class="forgot-pwd-row">
-                        <a href="forgot-password.html" class="forgot-pwd-link">Forgot Password?</a>
-                    </div>
-                    
-                    <button type="submit" id="gate-log-btn" class="gradient-btn">
-                        <span>SIGN IN</span> <i class="fa-solid fa-arrow-right-long"></i>
-                    </button>
-                </form>
-                
-                <div class="auth-card-footer">
-                    <span id="gate-footer-hint">Already have an account? <a href="#" onclick="switchTab('login')">Login</a></span>
-                </div>
+                <style>
+                    .outline-btn:hover {
+                        background: rgba(255, 255, 255, 0.1) !important;
+                        border-color: rgba(255, 255, 255, 0.3) !important;
+                        box-shadow: 0 0 15px rgba(255, 255, 255, 0.05);
+                        transform: translateY(-1px);
+                    }
+                    .outline-btn:active {
+                        transform: translateY(0);
+                    }
+                </style>
             </div>
             
             <!-- Bottom validation markers -->
@@ -522,147 +478,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 </div>
 
 <script>
-    // Tab Swapping Logic
-    function switchTab(tab) {
-        const regForm = document.getElementById('gate-register-form');
-        const logForm = document.getElementById('gate-login-form');
-        const regTabBtn = document.getElementById('tab-register');
-        const logTabBtn = document.getElementById('tab-login');
-        const footerHint = document.getElementById('gate-footer-hint');
-        
-        if (tab === 'register') {
-            if (regForm) regForm.style.display = 'flex';
-            if (logForm) logForm.style.display = 'none';
-            if (regTabBtn) regTabBtn.classList.add('active');
-            if (logTabBtn) logTabBtn.classList.remove('active');
-            if (footerHint) footerHint.innerHTML = `Already have an account? <a href="#" onclick="switchTab('login')">Login</a>`;
-        } else if (tab === 'login') {
-            if (regForm) regForm.style.display = 'none';
-            if (logForm) logForm.style.display = 'flex';
-            if (regTabBtn) regTabBtn.classList.remove('active');
-            if (logTabBtn) logTabBtn.classList.add('active');
-            if (footerHint) footerHint.innerHTML = `Don't have an account? <a href="#" onclick="switchTab('register')">Register</a>`;
-        }
-    }
-
-    // Toggle password fields
-    function toggleGatePassword(inputId, btn) {
-        const input = document.getElementById(inputId);
-        const icon = btn.querySelector('i');
-        if (input) {
-            if (input.type === 'password') {
-                input.type = 'text';
-                icon.classList.remove('fa-eye-slash');
-                icon.classList.add('fa-eye');
-            } else {
-                input.type = 'password';
-                icon.classList.remove('fa-eye');
-                icon.classList.add('fa-eye-slash');
-            }
-        }
-    }
-
-    // Form Handlers wireup on DOMContentLoaded
-    document.addEventListener('DOMContentLoaded', () => {
-        const regForm = document.getElementById('gate-register-form');
-        const logForm = document.getElementById('gate-login-form');
-
-        if (regForm) {
-            regForm.addEventListener('submit', async (e) => {
-                e.preventDefault();
-                const name = document.getElementById('gate-reg-name').value.trim();
-                const email = document.getElementById('gate-reg-email').value.trim().toLowerCase();
-                const phone = document.getElementById('gate-reg-phone').value.trim();
-                const role = document.getElementById('gate-reg-role').value;
-                const password = document.getElementById('gate-reg-password').value;
-
-                if (!role) {
-                    alert("Please select a registration role.");
-                    return;
-                }
-
-                const submitBtn = document.getElementById('gate-reg-btn');
-                submitBtn.disabled = true;
-                const originalText = submitBtn.innerHTML;
-                submitBtn.innerHTML = `<span>Creating account...</span> <i class="fa-solid fa-spinner fa-spin"></i>`;
-
-                try {
-                    const { data, error } = await window.supabaseClient.auth.signUp({
-                        email: email,
-                        password: password,
-                        options: {
-                            emailRedirectTo: 'https://www.prakharenterprises.in/login.html',
-                            data: {
-                                full_name: name,
-                                phone: phone,
-                                role: role
-                            }
-                        }
-                    });
-                    
-                    if (error) throw error;
-                    
-                    if (data.session) {
-                        alert("Sign up successful! Redirecting to dashboard...");
-                        window.location.reload();
-                    } else {
-                        alert("Sign up successful! You can now log in with your credentials.");
-                        switchTab('login');
-                        const logEmailInput = document.getElementById('gate-log-email');
-                        if (logEmailInput) logEmailInput.value = email;
-                        submitBtn.disabled = false;
-                        submitBtn.innerHTML = originalText;
-                    }
-                } catch (err) {
-                    alert(err.message || "Registration failed. Please try again.");
-                    submitBtn.disabled = false;
-                    submitBtn.innerHTML = originalText;
-                }
-            });
-        }
-
-        if (logForm) {
-            logForm.addEventListener('submit', async (e) => {
-                e.preventDefault();
-                const email = document.getElementById('gate-log-email').value.trim().toLowerCase();
-                const password = document.getElementById('gate-log-password').value;
-
-                const submitBtn = document.getElementById('gate-log-btn');
-                submitBtn.disabled = true;
-                const originalText = submitBtn.innerHTML;
-                submitBtn.innerHTML = `<span>Signing in...</span> <i class="fa-solid fa-spinner fa-spin"></i>`;
-
-                try {
-                    const { data, error } = await window.supabaseClient.auth.signInWithPassword({
-                        email: email,
-                        password: password
-                    });
-                    
-                    if (error) throw error;
-                    
-                    if (window.authAPI) {
-                        // Check suspension status in the background, but do not block access if profile is missing
-                        window.authAPI.getUserProfile(data.user.id).then(async (profile) => {
-                            if (profile && profile.account_status === 'suspended') {
-                                alert("Your account is suspended. Please contact support.");
-                                await window.authAPI.logout();
-                            }
-                        }).catch(err => console.log("Profile check skipped:", err));
-                    }
-                    
-                    // Authorized! Hide gate overlay and display content
-                    const gate = document.getElementById('homepage-gate');
-                    const mainContent = document.getElementById('main-website-content');
-                    if (gate) gate.style.display = 'none';
-                    if (mainContent) mainContent.style.display = 'block';
-                } catch (err) {
-                    alert(err.message || "Invalid login credentials.");
-                    submitBtn.disabled = false;
-                    submitBtn.innerHTML = originalText;
-                }
-            });
-        }
-    });
+    // Embedded gate page state is checked and managed dynamically by route_guard.js in the head.
 </script>
 
 <!-- Main Website Content Wrapper -->
