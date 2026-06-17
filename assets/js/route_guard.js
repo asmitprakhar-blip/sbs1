@@ -121,35 +121,19 @@ document.addEventListener('DOMContentLoaded', async () => {
             return;
         }
         
-        // Verify user profile status
-        if (window.authAPI) {
-            let profile = await window.authAPI.getUserProfile(user.id);
-            if (!profile) {
-                try {
-                    const { data: newProfile, error: insertError } = await window.supabaseClient
-                        .from('user_profiles')
-                        .insert([{
-                            id: user.id,
-                            email: user.email,
-                            full_name: user.user_metadata?.full_name || 'Summit Attendee',
-                            role: user.user_metadata?.role || 'attendee',
-                            is_verified: true,
-                            account_status: 'active'
-                        }])
-                        .select()
-                        .single();
-                    if (insertError) throw insertError;
-                    profile = newProfile;
-                } catch (insertErr) {
-                    console.error("Auto-profile creation in route guard failed:", insertErr);
+        // If accessing admin page, verify admin role status
+        if (page === 'admin.html') {
+            if (window.authAPI) {
+                const profile = await window.authAPI.getUserProfile(user.id);
+                if (!profile || !['admin', 'super_admin'].includes(profile.role)) {
                     window.location.href = 'index.html';
                     return;
                 }
-            }
-            if (profile.account_status === 'suspended') {
-                alert("Your account is suspended. Please contact support.");
-                await window.authAPI.logout();
-                return;
+                if (profile.account_status === 'suspended') {
+                    alert("Your account is suspended. Please contact support.");
+                    await window.authAPI.logout();
+                    return;
+                }
             }
         }
         
@@ -165,44 +149,9 @@ document.addEventListener('DOMContentLoaded', async () => {
             const mainContent = document.getElementById('main-website-content');
             
             if (user) {
-                let hasProfile = true;
-                if (window.authAPI) {
-                    let profile = await window.authAPI.getUserProfile(user.id);
-                    if (!profile) {
-                        try {
-                            const { data: newProfile, error: insertError } = await window.supabaseClient
-                                .from('user_profiles')
-                                .insert([{
-                                    id: user.id,
-                                    email: user.email,
-                                    full_name: user.user_metadata?.full_name || 'Summit Attendee',
-                                    role: user.user_metadata?.role || 'attendee',
-                                    is_verified: true,
-                                    account_status: 'active'
-                                }])
-                                .select()
-                                .single();
-                            if (insertError) throw insertError;
-                            profile = newProfile;
-                        } catch (insertErr) {
-                            console.error("Auto-profile creation in public route failed:", insertErr);
-                            hasProfile = false;
-                        }
-                    }
-                }
-                
-                if (hasProfile) {
-                    // Authorized: Show website contents
-                    if (gate) gate.style.display = 'none';
-                    if (mainContent) mainContent.style.display = 'block';
-                } else {
-                    // Sign out and reload if profile is missing
-                    if (window.supabaseClient) {
-                        await window.supabaseClient.auth.signOut();
-                    }
-                    window.location.reload();
-                    return;
-                }
+                // Authorized: Show website contents
+                if (gate) gate.style.display = 'none';
+                if (mainContent) mainContent.style.display = 'block';
             } else {
                 // Not authenticated: Enforce launch gate layout only
                 if (gate) gate.style.display = 'block';
