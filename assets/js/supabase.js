@@ -70,8 +70,7 @@ async function submitFormToSupabase(tableName, payload) {
     try {
         const { data, error } = await client
             .from(tableName)
-            .insert([payload])
-            .select();
+            .insert([payload]);
             
         return { data, error };
     } catch (err) {
