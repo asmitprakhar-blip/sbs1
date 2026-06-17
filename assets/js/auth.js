@@ -60,10 +60,10 @@ async function logout() {
     try {
         const { error } = await window.supabaseClient.auth.signOut();
         if (error) throw error;
-        window.location.href = 'login.html';
+        window.location.href = 'index.html';
     } catch (err) {
         console.error("Error during logout:", err);
-        window.location.href = 'login.html';
+        window.location.href = 'index.html';
     }
 }
 
