@@ -1,0 +1,658 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Account | Startup Business Summit 2026</title>
+    
+    <!-- Fonts & Icons -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- CSS Style Setup -->
+    <style>
+        :root {
+            --bg-color: #030712;
+            --card-bg: #0b0f19;
+            --text-main: #f9fafb;
+            --text-muted: #9ca3af;
+            --primary: #6366f1;
+            --primary-hover: #4f46e5;
+            --border: #1f2937;
+            --input-bg: #111827;
+            --error: #ef4444;
+            --success: #10b981;
+            --warning: #f59e0b;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 24px;
+            background-image: radial-gradient(circle at top left, rgba(99, 102, 241, 0.15), transparent 40%),
+                              radial-gradient(circle at bottom right, rgba(168, 85, 247, 0.1), transparent 40%);
+        }
+
+        .auth-container {
+            width: 100%;
+            max-width: 600px;
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 40px;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3), 0 8px 10px -6px rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(10px);
+            animation: fadeIn 0.4s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 32px;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: 700;
+            background: linear-gradient(135deg, #818cf8, #c084fc);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 8px;
+            display: inline-block;
+        }
+
+        .title {
+            font-size: 20px;
+            font-weight: 600;
+            color: var(--text-main);
+            margin-bottom: 6px;
+        }
+
+        .subtitle {
+            font-size: 14px;
+            color: var(--text-muted);
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .form-group.full-width {
+            grid-column: span 2;
+        }
+
+        @media (max-width: 580px) {
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+            .form-group.full-width {
+                grid-column: span 1;
+            }
+            .auth-container {
+                padding: 24px;
+            }
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .label {
+            font-size: 13px;
+            font-weight: 500;
+            color: #d1d5db;
+        }
+
+        .input-wrapper {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
+        .input-wrapper i.field-icon {
+            position: absolute;
+            left: 14px;
+            color: var(--text-muted);
+            font-size: 15px;
+        }
+
+        .input-wrapper .show-pwd-btn {
+            position: absolute;
+            right: 14px;
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            cursor: pointer;
+            font-size: 15px;
+            transition: color 0.2s;
+        }
+
+        .input-wrapper .show-pwd-btn:hover {
+            color: var(--text-main);
+        }
+
+        .input {
+            width: 100%;
+            padding: 12px 14px 12px 40px;
+            background-color: var(--input-bg);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            color: var(--text-main);
+            font-size: 14px;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+
+        .input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2);
+        }
+
+        .input-wrapper.no-icon .input {
+            padding-left: 14px;
+        }
+
+        /* Password Strength Meter */
+        .strength-container {
+            margin-top: 6px;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .strength-bar {
+            height: 4px;
+            border-radius: 2px;
+            background-color: var(--border);
+            display: flex;
+            overflow: hidden;
+            gap: 2px;
+        }
+
+        .strength-segment {
+            flex: 1;
+            height: 100%;
+            background-color: transparent;
+            transition: background-color 0.3s;
+        }
+
+        .strength-text {
+            font-size: 12px;
+            color: var(--text-muted);
+            display: flex;
+            justify-content: space-between;
+        }
+
+        /* Checkbox customization */
+        .checkbox-container {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            cursor: pointer;
+            font-size: 13px;
+            color: var(--text-muted);
+            user-select: none;
+        }
+
+        .checkbox-container input {
+            margin-top: 3px;
+            accent-color: var(--primary);
+        }
+
+        .checkbox-container a {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .checkbox-container a:hover {
+            text-decoration: underline;
+        }
+
+        /* Buttons */
+        .btn-submit {
+            width: 100%;
+            padding: 14px;
+            background-color: var(--primary);
+            border: none;
+            border-radius: 8px;
+            color: white;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .btn-submit:hover {
+            background-color: var(--primary-hover);
+        }
+
+        .btn-submit:disabled {
+            background-color: #3730a3;
+            color: #a5b4fc;
+            cursor: not-allowed;
+        }
+
+        .footer-link {
+            text-align: center;
+            font-size: 14px;
+            color: var(--text-muted);
+            margin-top: 24px;
+        }
+
+        .footer-link a {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .footer-link a:hover {
+            text-decoration: underline;
+        }
+
+        /* Toast notifications system */
+        .toast-container {
+            position: fixed;
+            top: 24px;
+            right: 24px;
+            z-index: 1000;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            max-width: 400px;
+            width: 100%;
+        }
+
+        .toast {
+            background: #111827;
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 16px 20px;
+            color: var(--text-main);
+            box-shadow: 0 10px 15px -3px rgba(0,0,0,0.3);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            animation: slideIn 0.3s ease-out forwards;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .toast::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            height: 3px;
+            width: 100%;
+            animation: progress 4s linear forwards;
+        }
+
+        .toast.toast-error::after { background-color: var(--error); }
+        .toast.toast-success::after { background-color: var(--success); }
+        .toast.toast-warning::after { background-color: var(--warning); }
+
+        .toast.toast-error i { color: var(--error); }
+        .toast.toast-success i { color: var(--success); }
+        .toast.toast-warning i { color: var(--warning); }
+
+        @keyframes slideIn {
+            from { transform: translateX(120%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+
+        @keyframes progress {
+            from { width: 100%; }
+            to { width: 0%; }
+        }
+
+        /* Spinner */
+        .spinner {
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            border-top: 2px solid white;
+            border-radius: 50%;
+            width: 18px;
+            height: 18px;
+            animation: spin 0.8s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="auth-container">
+        <div class="header">
+            <span class="logo"><i class="fa-solid fa-rocket"></i> Startup Summit</span>
+            <h1 class="title">Create your account</h1>
+            <p class="subtitle">Join innovators, founders, and investors</p>
+        </div>
+
+        <form id="register-form">
+            <div class="form-grid">
+                
+                <!-- Full Name -->
+                <div class="form-group">
+                    <label class="label">Full Name *</label>
+                    <div class="input-wrapper">
+                        <i class="fa-regular fa-user field-icon"></i>
+                        <input type="text" id="full-name" class="input" placeholder="John Doe" required>
+                    </div>
+                </div>
+
+                <!-- Email Address -->
+                <div class="form-group">
+                    <label class="label">Email Address *</label>
+                    <div class="input-wrapper">
+                        <i class="fa-regular fa-envelope field-icon"></i>
+                        <input type="email" id="email" class="input" placeholder="john@company.com" required>
+                    </div>
+                </div>
+
+                <!-- Phone Number -->
+                <div class="form-group">
+                    <label class="label">Phone Number *</label>
+                    <div class="input-wrapper">
+                        <i class="fa-solid fa-phone field-icon"></i>
+                        <input type="tel" id="phone" class="input" placeholder="+1 (555) 000-0000" required>
+                    </div>
+                </div>
+
+                <!-- Role dropdown -->
+                <div class="form-group">
+                    <label class="label">Select Portal Role *</label>
+                    <div class="input-wrapper no-icon">
+                        <select id="role" class="input" required>
+                            <option value="attendee" selected>Attendee</option>
+                            <option value="startup">Startup Founder</option>
+                            <option value="investor">Investor</option>
+                            <option value="speaker">Speaker</option>
+                            <option value="sponsor">Sponsor</option>
+                            <option value="exhibitor">Exhibitor</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Password -->
+                <div class="form-group">
+                    <label class="label">Password *</label>
+                    <div class="input-wrapper">
+                        <i class="fa-solid fa-lock field-icon"></i>
+                        <input type="password" id="password" class="input" placeholder="••••••••" required>
+                        <button type="button" class="show-pwd-btn" onclick="togglePassword('password', this)">
+                            <i class="fa-regular fa-eye"></i>
+                        </button>
+                    </div>
+                    <div class="strength-container">
+                        <div class="strength-bar">
+                            <div class="strength-segment" id="seg-1"></div>
+                            <div class="strength-segment" id="seg-2"></div>
+                            <div class="strength-segment" id="seg-3"></div>
+                            <div class="strength-segment" id="seg-4"></div>
+                        </div>
+                        <div class="strength-text">
+                            <span id="strength-lbl">Too weak</span>
+                            <span id="strength-req">Min. 8 chars</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Confirm Password -->
+                <div class="form-group">
+                    <label class="label">Confirm Password *</label>
+                    <div class="input-wrapper">
+                        <i class="fa-solid fa-lock field-icon"></i>
+                        <input type="password" id="confirm-password" class="input" placeholder="••••••••" required>
+                        <button type="button" class="show-pwd-btn" onclick="togglePassword('confirm-password', this)">
+                            <i class="fa-regular fa-eye"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Organization -->
+                <div class="form-group">
+                    <label class="label">Organization / Company Name</label>
+                    <div class="input-wrapper">
+                        <i class="fa-regular fa-building field-icon"></i>
+                        <input type="text" id="organization" class="input" placeholder="Stripe Inc.">
+                    </div>
+                </div>
+
+                <!-- Designation -->
+                <div class="form-group">
+                    <label class="label">Designation</label>
+                    <div class="input-wrapper">
+                        <i class="fa-solid fa-briefcase field-icon"></i>
+                        <input type="text" id="designation" class="input" placeholder="Founder & CEO">
+                    </div>
+                </div>
+
+                <!-- LinkedIn URL -->
+                <div class="form-group full-width">
+                    <label class="label">LinkedIn Profile URL</label>
+                    <div class="input-wrapper">
+                        <i class="fa-brands fa-linkedin-in field-icon"></i>
+                        <input type="url" id="linkedin-url" class="input" placeholder="https://linkedin.com/in/username">
+                    </div>
+                </div>
+
+                <!-- Terms & Conditions Checkbox -->
+                <div class="form-group full-width">
+                    <label class="checkbox-container">
+                        <input type="checkbox" id="terms" required>
+                        I agree to the <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a> of Startup Business Summit.
+                    </label>
+                </div>
+
+                <!-- Submit Button -->
+                <div class="form-group full-width" style="margin-top: 10px;">
+                    <button type="submit" id="btn-submit" class="btn-submit">
+                        <span>Create Account</span>
+                    </button>
+                </div>
+
+            </div>
+        </form>
+
+        <div class="footer-link">
+            Already have an account? <a href="login.html">Log in</a>
+        </div>
+    </div>
+
+    <!-- Toast container for SaaS banners -->
+    <div class="toast-container" id="toast-container"></div>
+
+    <!-- Scripts setup -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="assets/js/supabase.js"></script>
+    <script src="assets/js/auth.js"></script>
+
+    <script>
+        // Redirect if already logged in
+        document.addEventListener('DOMContentLoaded', async () => {
+            if (window.authAPI) {
+                await window.authAPI.redirectIfAuthorized();
+            }
+        });
+
+        // Toggle Password Show/Hide
+        function togglePassword(inputId, btn) {
+            const input = document.getElementById(inputId);
+            const icon = btn.querySelector('i');
+            if (input.type === 'password') {
+                input.type = 'text';
+                icon.classList.remove('fa-eye');
+                icon.classList.add('fa-eye-slash');
+            } else {
+                input.type = 'password';
+                icon.classList.remove('fa-eye-slash');
+                icon.classList.add('fa-eye');
+            }
+        }
+
+        // Show SaaS notification toast
+        function showToast(message, type = 'success') {
+            const container = document.getElementById('toast-container');
+            const toast = document.createElement('div');
+            toast.className = `toast toast-${type}`;
+            
+            let icon = 'fa-circle-check';
+            if (type === 'error') icon = 'fa-triangle-exclamation';
+            if (type === 'warning') icon = 'fa-circle-info';
+            
+            toast.innerHTML = `
+                <i class="fa-solid ${icon}"></i>
+                <span>${message}</span>
+            `;
+            container.appendChild(toast);
+            
+            setTimeout(() => {
+                toast.style.animation = 'slideIn 0.3s ease-out reverse';
+                setTimeout(() => toast.remove(), 300);
+            }, 4000);
+        }
+
+        // Password strength meter validator
+        const passwordInput = document.getElementById('password');
+        const segments = [
+            document.getElementById('seg-1'),
+            document.getElementById('seg-2'),
+            document.getElementById('seg-3'),
+            document.getElementById('seg-4')
+        ];
+        const strengthLabel = document.getElementById('strength-lbl');
+
+        passwordInput.addEventListener('input', () => {
+            const val = passwordInput.value;
+            let score = 0;
+            
+            if (val.length >= 8) score++;
+            if (/[A-Z]/.test(val)) score++;
+            if (/[0-9]/.test(val)) score++;
+            if (/[^A-Za-z0-9]/.test(val)) score++;
+
+            // Clear segments
+            segments.forEach(seg => seg.style.backgroundColor = 'transparent');
+
+            if (val.length === 0) {
+                strengthLabel.innerText = '';
+                return;
+            }
+
+            const colors = [varName('--error'), varName('--warning'), '#60a5fa', varName('--success')];
+            const labels = ['Weak', 'Medium', 'Strong', 'Very Secure'];
+
+            for (let i = 0; i < score; i++) {
+                segments[i].style.backgroundColor = colors[score - 1];
+            }
+            strengthLabel.innerText = labels[score - 1] || 'Too weak';
+            strengthLabel.style.color = colors[score - 1];
+        });
+
+        function varName(cssVar) {
+            return getComputedStyle(document.documentElement).getPropertyValue(cssVar).trim();
+        }
+
+        // Form Submit Handler
+        const form = document.getElementById('register-form');
+        const submitBtn = document.getElementById('btn-submit');
+
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const name = document.getElementById('full-name').value.trim();
+            const email = document.getElementById('email').value.trim().toLowerCase();
+            const phone = document.getElementById('phone').value.trim();
+            const role = document.getElementById('role').value;
+            const password = passwordInput.value;
+            const confirmPassword = document.getElementById('confirm-password').value;
+            const organization = document.getElementById('organization').value.trim();
+            const designation = document.getElementById('designation').value.trim();
+            const linkedinUrl = document.getElementById('linkedin-url').value.trim();
+
+            // Password match check
+            if (password !== confirmPassword) {
+                showToast("Passwords do not match.", "error");
+                return;
+            }
+
+            // Strength validation
+            if (password.length < 8) {
+                showToast("Password must be at least 8 characters.", "error");
+                return;
+            }
+
+            if (!window.supabaseClient) {
+                showToast("Supabase configuration error.", "error");
+                return;
+            }
+
+            // Enter loading state
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = `<div class="spinner"></div> <span>Creating account...</span>`;
+
+            try {
+                // Register via Supabase Auth passing custom claims metadata
+                const { data, error } = await window.supabaseClient.auth.signUp({
+                    email: email,
+                    password: password,
+                    options: {
+                        emailRedirectTo: `${window.location.origin}/login.html`,
+                        data: {
+                            full_name: name,
+                            phone: phone,
+                            role: role,
+                            organization: organization,
+                            designation: designation,
+                            linkedin_url: linkedinUrl
+                        }
+                    }
+                });
+
+                if (error) throw error;
+
+                showToast("Sign up successful! Please check your email for the confirmation link.", "success");
+                
+                // Redirect user to email verification landing page after 2 seconds
+                setTimeout(() => {
+                    window.location.href = `verify-email.html?email=${encodeURIComponent(email)}`;
+                }, 2000);
+
+            } catch (err) {
+                console.error("Sign up error:", err);
+                showToast(err.message || "An error occurred during registration.", "error");
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = `<span>Create Account</span>`;
+            }
+        });
+    </script>
+</body>
+</html>

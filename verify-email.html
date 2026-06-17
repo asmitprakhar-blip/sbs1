@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Verify Your Email | Startup Business Summit 2026</title>
+    
+    <!-- Fonts & Icons -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- CSS Style Setup -->
+    <style>
+        :root {
+            --bg-color: #030712;
+            --card-bg: #0b0f19;
+            --text-main: #f9fafb;
+            --text-muted: #9ca3af;
+            --primary: #6366f1;
+            --primary-hover: #4f46e5;
+            --border: #1f2937;
+            --input-bg: #111827;
+            --error: #ef4444;
+            --success: #10b981;
+            --warning: #f59e0b;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 24px;
+            background-image: radial-gradient(circle at top left, rgba(99, 102, 241, 0.15), transparent 40%),
+                              radial-gradient(circle at bottom right, rgba(168, 85, 247, 0.1), transparent 40%);
+        }
+
+        .auth-container {
+            width: 100%;
+            max-width: 440px;
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 40px;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3), 0 8px 10px -6px rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(10px);
+            text-align: center;
+            animation: fadeIn 0.4s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .icon-wrapper {
+            width: 72px;
+            height: 72px;
+            border-radius: 50%;
+            background-color: rgba(99, 102, 241, 0.1);
+            border: 1px solid rgba(99, 102, 241, 0.25);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 24px;
+            color: var(--primary);
+            font-size: 32px;
+        }
+
+        .logo {
+            font-size: 20px;
+            font-weight: 700;
+            background: linear-gradient(135deg, #818cf8, #c084fc);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 16px;
+            display: inline-block;
+        }
+
+        .title {
+            font-size: 22px;
+            font-weight: 600;
+            color: var(--text-main);
+            margin-bottom: 12px;
+        }
+
+        .desc {
+            font-size: 14px;
+            color: var(--text-muted);
+            line-height: 1.6;
+            margin-bottom: 32px;
+        }
+
+        .email-badge {
+            background-color: var(--input-bg);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 6px 16px;
+            font-family: monospace;
+            font-size: 13px;
+            color: #d1d5db;
+            display: inline-block;
+            margin-bottom: 24px;
+            max-width: 100%;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .btn-check {
+            width: 100%;
+            padding: 14px;
+            background-color: var(--primary);
+            border: none;
+            border-radius: 8px;
+            color: white;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .btn-check:hover {
+            background-color: var(--primary-hover);
+        }
+
+        .btn-resend {
+            width: 100%;
+            padding: 14px;
+            background-color: var(--input-bg);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            color: var(--text-main);
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background-color 0.2s, border-color 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .btn-resend:hover {
+            background-color: var(--border);
+            border-color: #374151;
+        }
+
+        .btn-resend:disabled {
+            color: var(--text-muted);
+            cursor: not-allowed;
+            opacity: 0.6;
+        }
+
+        .footer-link {
+            font-size: 14px;
+            color: var(--text-muted);
+            margin-top: 32px;
+        }
+
+        .footer-link a {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .footer-link a:hover {
+            text-decoration: underline;
+        }
+
+        /* Toast notifications system */
+        .toast-container {
+            position: fixed;
+            top: 24px;
+            right: 24px;
+            z-index: 1000;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            max-width: 400px;
+            width: 100%;
+        }
+
+        .toast {
+            background: #111827;
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 16px 20px;
+            color: var(--text-main);
+            box-shadow: 0 10px 15px -3px rgba(0,0,0,0.3);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            animation: slideIn 0.3s ease-out forwards;
+            position: relative;
+            overflow: hidden;
+            text-align: left;
+        }
+
+        .toast::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            height: 3px;
+            width: 100%;
+            animation: progress 4s linear forwards;
+        }
+
+        .toast.toast-error::after { background-color: var(--error); }
+        .toast.toast-success::after { background-color: var(--success); }
+        .toast.toast-warning::after { background-color: var(--warning); }
+
+        .toast.toast-error i { color: var(--error); }
+        .toast.toast-success i { color: var(--success); }
+        .toast.toast-warning i { color: var(--warning); }
+
+        @keyframes slideIn {
+            from { transform: translateX(120%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+
+        @keyframes progress {
+            from { width: 100%; }
+            to { width: 0%; }
+        }
+
+        /* Spinner */
+        .spinner {
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            border-top: 2px solid white;
+            border-radius: 50%;
+            width: 18px;
+            height: 18px;
+            animation: spin 0.8s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="auth-container">
+        <div class="icon-wrapper">
+            <i class="fa-regular fa-envelope-open"></i>
+        </div>
+        <span class="logo"><i class="fa-solid fa-rocket"></i> Startup Summit</span>
+        <h1 class="title">Verify your email</h1>
+        <p class="desc">
+            We've sent a verification link to your email address. Please click the link to confirm your account and activate your portal access.
+        </p>
+
+        <div>
+            <span class="email-badge" id="email-lbl">your-email@domain.com</span>
+        </div>
+
+        <button id="btn-check" class="btn-check" onclick="checkStatus()">
+            <span>I've Verified My Email</span>
+        </button>
+
+        <button id="btn-resend" class="btn-resend" onclick="resendEmail()">
+            <i class="fa-solid fa-rotate-right"></i>
+            <span id="resend-text">Resend Verification Email</span>
+        </button>
+
+        <div class="footer-link">
+            Need help? Contact support or <a href="login.html" onclick="signOut()">Log in as another user</a>
+        </div>
+    </div>
+
+    <!-- Toast container -->
+    <div class="toast-container" id="toast-container"></div>
+
+    <!-- Scripts setup -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="assets/js/supabase.js"></script>
+    <script src="assets/js/auth.js"></script>
+
+    <script>
+        let userEmail = '';
+        let currentUser = null;
+
+        document.addEventListener('DOMContentLoaded', async () => {
+            // Read email from URL query params
+            const params = new URLSearchParams(window.location.search);
+            userEmail = params.get('email') || '';
+
+            if (window.authAPI) {
+                currentUser = await window.authAPI.getCurrentUser();
+                if (currentUser) {
+                    userEmail = currentUser.email;
+                    
+                    // Verify if they are already verified
+                    const profile = await window.authAPI.getUserProfile(currentUser.id);
+                    if (profile && profile.is_verified) {
+                        showToast("Email verified successfully! Redirecting...", "success");
+                        setTimeout(() => {
+                            const dashboard = window.authAPI.ROLE_DASHBOARD_MAP[profile.role] || 'attendee-dashboard.html';
+                            window.location.href = dashboard;
+                        }, 1500);
+                    }
+                }
+            }
+
+            document.getElementById('email-lbl').innerText = userEmail || 'your email address';
+        });
+
+        // Show Toast messages
+        function showToast(message, type = 'success') {
+            const container = document.getElementById('toast-container');
+            const toast = document.createElement('div');
+            toast.className = `toast toast-${type}`;
+            
+            let icon = 'fa-circle-check';
+            if (type === 'error') icon = 'fa-triangle-exclamation';
+            if (type === 'warning') icon = 'fa-circle-info';
+            
+            toast.innerHTML = `
+                <i class="fa-solid ${icon}"></i>
+                <span>${message}</span>
+            `;
+            container.appendChild(toast);
+            
+            setTimeout(() => {
+                toast.style.animation = 'slideIn 0.3s ease-out reverse';
+                setTimeout(() => toast.remove(), 300);
+            }, 4000);
+        }
+
+        // Manually trigger a database check to see if email confirmation has fired trigger status
+        async function checkStatus() {
+            const checkBtn = document.getElementById('btn-check');
+            checkBtn.disabled = true;
+            checkBtn.innerHTML = `<div class="spinner"></div> <span>Checking status...</span>`;
+
+            try {
+                if (!window.supabaseClient) {
+                    throw new Error("Supabase client is not loaded.");
+                }
+
+                // Supabase Auth requires session refresh to get new confirmed status
+                const { data: { user }, error: refreshError } = await window.supabaseClient.auth.getUser();
+                if (refreshError) throw refreshError;
+
+                if (user) {
+                    if (window.authAPI) {
+                        const profile = await window.authAPI.getUserProfile(user.id);
+                        if (profile && profile.is_verified) {
+                            showToast("🎉 Email verified! Welcome to the summit portal.", "success");
+                            setTimeout(() => {
+                                const dashboard = window.authAPI.ROLE_DASHBOARD_MAP[profile.role] || 'attendee-dashboard.html';
+                                window.location.href = dashboard;
+                            }, 1500);
+                            return;
+                        }
+                    }
+                }
+                
+                showToast("Verification link not clicked yet. Please check your inbox (including spam).", "warning");
+
+            } catch (err) {
+                console.error("Status check error:", err);
+                showToast(err.message || "An error occurred checking verification status.", "error");
+            } finally {
+                checkBtn.disabled = false;
+                checkBtn.innerHTML = `<span>I've Verified My Email</span>`;
+            }
+        }
+
+        // Resend Verification Email
+        async function resendEmail() {
+            const resendBtn = document.getElementById('btn-resend');
+            const resendText = document.getElementById('resend-text');
+            
+            if (!userEmail) {
+                showToast("No email address found to resend to.", "error");
+                return;
+            }
+
+            resendBtn.disabled = true;
+            resendText.innerText = 'Resending email...';
+
+            try {
+                if (!window.supabaseClient) {
+                    throw new Error("Supabase client not initialized.");
+                }
+
+                const { error } = await window.supabaseClient.auth.resend({
+                    type: 'signup',
+                    email: userEmail,
+                    options: {
+                        emailRedirectTo: `${window.location.origin}/login.html`
+                    }
+                });
+
+                if (error) throw error;
+
+                showToast("Verification link sent successfully! Check your inbox.", "success");
+                
+                // Add a cooldown timer of 60 seconds
+                let cooldown = 60;
+                const timer = setInterval(() => {
+                    cooldown--;
+                    if (cooldown <= 0) {
+                        clearInterval(timer);
+                        resendBtn.disabled = false;
+                        resendText.innerText = 'Resend Verification Email';
+                    } else {
+                        resendText.innerText = `Resend in ${cooldown}s`;
+                    }
+                }, 1000);
+
+            } catch (err) {
+                console.error("Resend error:", err);
+                showToast(err.message || "Failed to resend confirmation email.", "error");
+                resendBtn.disabled = false;
+                resendText.innerText = 'Resend Verification Email';
+            }
+        }
+
+        // Sign out helper
+        async function signOut() {
+            if (window.authAPI) {
+                await window.authAPI.logout();
+            }
+        }
+    </script>
+</body>
+</html>
