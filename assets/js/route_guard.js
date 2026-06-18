@@ -109,20 +109,38 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
     
     let user = null;
+    let userProfile = null;
     try {
         const { data: { session } } = await client.auth.getSession();
         user = session ? session.user : null;
+        
+        if (user) {
+            if (window.authAPI) {
+                userProfile = await window.authAPI.getUserProfile(user.id);
+            } else {
+                const { data } = await client.from('user_profiles').select('*').eq('id', user.id).single();
+                userProfile = data;
+            }
+        }
     } catch (err) {
-        console.error("Failed to retrieve user session:", err);
+        console.error("Failed to retrieve user session / profile for navbar:", err);
     }
 
     // Dynamic navbar state sync for authenticated sessions
     if (user) {
+        const name = userProfile?.full_name || user?.user_metadata?.full_name || user?.email?.split('@')[0] || 'Member';
+        const avatar = userProfile?.avatar_url || `https://api.dicebear.com/7.x/initials/svg?seed=${encodeURIComponent(name)}`;
+        
         const updateNavbar = () => {
             const loginLinks = document.querySelectorAll('a[href="login.html"], a[href*="login.html"]');
             loginLinks.forEach(link => {
                 link.href = 'dashboard.html';
-                link.innerHTML = 'My Profile';
+                link.innerHTML = `
+                    <span class="custom-nav-profile" style="display: inline-flex; align-items: center; gap: 8px; vertical-align: middle;">
+                        <img src="${avatar}" style="width: 24px; height: 24px; border-radius: 50% !important; object-fit: cover; border: 1.5px solid #000000; background: #ffffff; flex-shrink: 0;" alt="Avatar">
+                        <span class="custom-nav-name" style="font-weight: 600; font-family: inherit; font-size: inherit; text-transform: uppercase; max-width: 110px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">${name}</span>
+                    </span>
+                `;
                 
                 const li = link.closest('li');
                 if (li && li.parentNode) {
@@ -131,8 +149,10 @@ document.addEventListener('DOMContentLoaded', async () => {
                         const logoutLi = document.createElement('li');
                         logoutLi.className = li.className + ' dynamic-logout-item';
                         
-                        const logoutLink = link.cloneNode(true);
+                        const logoutLink = document.createElement('a');
                         logoutLink.href = '#';
+                        logoutLink.className = link.className;
+                        logoutLink.style.cssText = link.style.cssText;
                         logoutLink.innerHTML = 'Logout';
                         logoutLink.addEventListener('click', async (e) => {
                             e.preventDefault();

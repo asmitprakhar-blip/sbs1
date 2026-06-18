@@ -900,3 +900,28 @@ header.elementor-location-header,
 .sbs-comparison-table tbody tr:nth-child(odd) td:first-child {
     background: #ffffff !important;
 }
+
+/* Responsive adjustments for custom nav profile info */
+.custom-nav-profile {
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 8px !important;
+    vertical-align: middle !important;
+}
+
+.custom-nav-name {
+    font-weight: 600 !important;
+    text-transform: uppercase !important;
+}
+
+@media (max-width: 768px) {
+    .elementor-nav-menu--dropdown .custom-nav-profile {
+        padding: 6px 0 !important;
+        width: 100% !important;
+        justify-content: flex-start !important;
+    }
+    
+    .elementor-nav-menu--dropdown .custom-nav-name {
+        max-width: 180px !important;
+    }
+}
