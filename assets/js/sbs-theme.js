@@ -140,6 +140,22 @@ window.handleFormSubmit = async function(event, category) {
 
         // Success Alert and Reset Form
         alert("Thank you. Your submission has been received successfully.");
+        
+        if (category === 'Early Bird Ticket Registration' || category === 'Exhibitor Registration') {
+            const wantAccount = confirm("Would you like to create a password to access your personal dashboard portal?");
+            if (wantAccount) {
+                const queryParams = new URLSearchParams({
+                    email: formData.email || '',
+                    name: formData.full_name || '',
+                    phone: formData.phone || '',
+                    org: formData.organization_name || '',
+                    role: category === 'Exhibitor Registration' ? 'exhibitor' : 'attendee'
+                });
+                window.location.href = `register-account.html?${queryParams.toString()}`;
+                return;
+            }
+        }
+        
         form.reset();
         
     } catch (error) {

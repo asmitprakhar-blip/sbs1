@@ -496,8 +496,18 @@
     <script src="assets/js/auth.js"></script>
 
     <script>
-        // Redirect if already logged in
+        // Redirect if already logged in and auto-populate fields from query parameters
         document.addEventListener('DOMContentLoaded', async () => {
+            const params = new URLSearchParams(window.location.search);
+            if (params.get('email')) document.getElementById('email').value = params.get('email');
+            if (params.get('name')) document.getElementById('full-name').value = params.get('name');
+            if (params.get('phone')) document.getElementById('phone').value = params.get('phone');
+            if (params.get('org')) document.getElementById('organization').value = params.get('org');
+            if (params.get('role')) {
+                const roleSelect = document.getElementById('role');
+                if (roleSelect) roleSelect.value = params.get('role');
+            }
+
             if (window.authAPI) {
                 await window.authAPI.redirectIfAuthorized();
             }
@@ -625,7 +635,7 @@
                     email: email,
                     password: password,
                     options: {
-                        emailRedirectTo: 'https://www.prakharenterprises.in/login.html',
+                        emailRedirectTo: window.location.origin + '/login.html',
                         data: {
                             full_name: name,
                             phone: phone,
