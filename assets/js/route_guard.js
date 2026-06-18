@@ -115,6 +115,41 @@ document.addEventListener('DOMContentLoaded', async () => {
     } catch (err) {
         console.error("Failed to retrieve user session:", err);
     }
+
+    // Dynamic navbar state sync for authenticated sessions
+    if (user) {
+        const updateNavbar = () => {
+            const loginLinks = document.querySelectorAll('a[href="login.html"], a[href*="login.html"]');
+            loginLinks.forEach(link => {
+                link.href = 'dashboard.html';
+                link.innerHTML = 'My Profile';
+                
+                const li = link.closest('li');
+                if (li && li.parentNode) {
+                    const existingLogout = li.parentNode.querySelector('.dynamic-logout-item');
+                    if (!existingLogout) {
+                        const logoutLi = document.createElement('li');
+                        logoutLi.className = li.className + ' dynamic-logout-item';
+                        
+                        const logoutLink = link.cloneNode(true);
+                        logoutLink.href = '#';
+                        logoutLink.innerHTML = 'Logout';
+                        logoutLink.addEventListener('click', async (e) => {
+                            e.preventDefault();
+                            if (window.authAPI) {
+                                await window.authAPI.logout();
+                            }
+                        });
+                        
+                        logoutLi.appendChild(logoutLink);
+                        li.parentNode.insertBefore(logoutLi, li.nextSibling);
+                    }
+                }
+            });
+        };
+        updateNavbar();
+        document.addEventListener('DOMContentLoaded', updateNavbar);
+    }
     
     if (!isPublic) {
         // Protected route execution

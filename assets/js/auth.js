@@ -2,12 +2,12 @@
 // Dependencies: Supabase JS SDK (CDN) and assets/js/supabase.js (initializes window.supabaseClient)
 
 const ROLE_DASHBOARD_MAP = {
-    'attendee': 'attendee-dashboard.html',
-    'startup': 'startup-dashboard.html',
-    'investor': 'investor-dashboard.html',
-    'speaker': 'speaker-dashboard.html',
-    'sponsor': 'sponsor-dashboard.html',
-    'exhibitor': 'exhibitor-dashboard.html',
+    'attendee': 'dashboard.html',
+    'startup': 'dashboard.html',
+    'investor': 'dashboard.html',
+    'speaker': 'dashboard.html',
+    'sponsor': 'dashboard.html',
+    'exhibitor': 'dashboard.html',
     'admin': 'admin.html',
     'super_admin': 'admin.html'
 };

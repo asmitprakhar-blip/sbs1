@@ -1,0 +1,1948 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Dashboard | Startup Business Summit 2026</title>
+    
+    <!-- Fonts & Icons -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="assets/css/sbs-theme.css" rel="stylesheet" />
+
+    <!-- CSS Setup -->
+    <style>
+        :root {
+            --bg-dark: #030712;
+            --card-dark: #0b0f19;
+            --border-dark: #1f2937;
+            --text-primary: #f9fafb;
+            --text-secondary: #9ca3af;
+            --accent: #6366f1;
+            --accent-hover: #4f46e5;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --sidebar-width: 260px;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-dark);
+            color: var(--text-primary);
+            min-height: 100vh;
+            display: flex;
+            overflow-x: hidden;
+            background-image: radial-gradient(circle at top right, rgba(99, 102, 241, 0.08), transparent 40%),
+                              radial-gradient(circle at bottom left, rgba(168, 85, 247, 0.05), transparent 40%);
+        }
+
+        /* Layout Container */
+        .app-container {
+            display: flex;
+            width: 100%;
+            min-height: 100vh;
+            position: relative;
+        }
+
+        /* Fixed Sidebar */
+        .sidebar {
+            width: var(--sidebar-width);
+            background-color: var(--card-dark);
+            border-right: 1px solid var(--border-dark);
+            display: flex;
+            flex-direction: column;
+            position: fixed;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            z-index: 1000;
+            transition: transform 0.3s ease;
+        }
+
+        .sidebar-header {
+            padding: 24px;
+            border-bottom: 1px solid var(--border-dark);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .sidebar-logo-img {
+            height: 32px;
+            width: auto;
+        }
+
+        .sidebar-logo-text {
+            font-family: 'Outfit', sans-serif;
+            font-weight: 700;
+            font-size: 16px;
+            background: linear-gradient(135deg, #818cf8, #c084fc);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .sidebar-profile {
+            padding: 24px;
+            border-bottom: 1px solid var(--border-dark);
+            text-align: center;
+        }
+
+        .profile-avatar-wrapper {
+            position: relative;
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 12px auto;
+        }
+
+        .profile-avatar {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid var(--accent);
+            background: #1f2937;
+        }
+
+        .profile-name {
+            font-family: 'Outfit', sans-serif;
+            font-weight: 600;
+            font-size: 16px;
+            margin-bottom: 4px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .profile-role-badge {
+            display: inline-block;
+            padding: 3px 10px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            background: rgba(99, 102, 241, 0.15);
+            color: #a5b4fc;
+            border: 1px solid rgba(99, 102, 241, 0.3);
+        }
+
+        .sidebar-nav {
+            flex: 1;
+            padding: 20px 12px;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            overflow-y: auto;
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 16px;
+            border-radius: 8px;
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 14px;
+            transition: all 0.2s ease;
+            cursor: pointer;
+            border: none;
+            background: transparent;
+            width: 100%;
+            text-align: left;
+        }
+
+        .nav-item:hover {
+            color: var(--text-primary);
+            background-color: rgba(255, 255, 255, 0.03);
+        }
+
+        .nav-item.active {
+            color: var(--text-primary);
+            background-color: rgba(99, 102, 241, 0.15);
+            border-left: 3px solid var(--accent);
+            border-radius: 0 8px 8px 0;
+            padding-left: 13px;
+        }
+
+        .nav-item i {
+            font-size: 16px;
+            width: 20px;
+            text-align: center;
+        }
+
+        .nav-item-badge {
+            margin-left: auto;
+            background: var(--danger);
+            color: white;
+            font-size: 11px;
+            font-weight: 700;
+            padding: 2px 6px;
+            border-radius: 10px;
+        }
+
+        .sidebar-footer {
+            padding: 16px;
+            border-top: 1px solid var(--border-dark);
+        }
+
+        /* Main Content Container */
+        .main-content {
+            flex: 1;
+            margin-left: var(--sidebar-width);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            width: calc(100% - var(--sidebar-width));
+        }
+
+        /* Top Header */
+        .top-header {
+            height: 70px;
+            border-bottom: 1px solid var(--border-dark);
+            background-color: rgba(11, 15, 25, 0.8);
+            backdrop-filter: blur(8px);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 32px;
+            position: sticky;
+            top: 0;
+            z-index: 900;
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .menu-toggle-btn {
+            display: none;
+            background: none;
+            border: none;
+            color: var(--text-primary);
+            font-size: 20px;
+            cursor: pointer;
+        }
+
+        .page-title {
+            font-family: 'Outfit', sans-serif;
+            font-size: 20px;
+            font-weight: 700;
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 24px;
+        }
+
+        .header-notification {
+            position: relative;
+            cursor: pointer;
+            color: var(--text-secondary);
+            font-size: 18px;
+            transition: color 0.2s;
+        }
+
+        .header-notification:hover {
+            color: var(--text-primary);
+        }
+
+        .header-notification-badge {
+            position: absolute;
+            top: -6px;
+            right: -6px;
+            background-color: var(--danger);
+            color: white;
+            font-size: 10px;
+            font-weight: 700;
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .header-user-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .header-user-avatar {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 1px solid var(--border-dark);
+        }
+
+        .header-user-name {
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--text-secondary);
+        }
+
+        /* Dashboard View Containers */
+        .content-body {
+            padding: 32px;
+            flex: 1;
+            overflow-y: auto;
+            max-width: 1200px;
+            width: 100%;
+            margin: 0 auto;
+        }
+
+        .dashboard-view {
+            display: none;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .dashboard-view.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(8px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Metrics Row */
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 20px;
+            margin-bottom: 32px;
+        }
+
+        .metric-card {
+            background-color: var(--card-dark);
+            border: 1px solid var(--border-dark);
+            border-radius: 12px;
+            padding: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .metric-info h4 {
+            font-size: 13px;
+            color: var(--text-secondary);
+            font-weight: 500;
+            margin-bottom: 6px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .metric-info p {
+            font-family: 'Outfit', sans-serif;
+            font-size: 28px;
+            font-weight: 700;
+        }
+
+        .metric-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+        }
+
+        .metric-icon.tickets { background: rgba(99, 102, 241, 0.1); color: var(--accent); }
+        .metric-icon.applications { background: rgba(16, 185, 129, 0.1); color: var(--success); }
+        .metric-icon.sponsorships { background: rgba(245, 158, 11, 0.1); color: var(--warning); }
+        .metric-icon.role { background: rgba(139, 92, 246, 0.1); color: #8b5cf6; }
+
+        /* Profile Completion Card */
+        .completion-card {
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.15) 0%, rgba(168, 85, 247, 0.08) 100%);
+            border: 1px solid rgba(99, 102, 241, 0.2);
+            border-radius: 16px;
+            padding: 28px;
+            margin-bottom: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .completion-info {
+            flex: 1;
+            min-width: 280px;
+        }
+
+        .completion-info h3 {
+            font-family: 'Outfit', sans-serif;
+            font-size: 20px;
+            margin-bottom: 8px;
+        }
+
+        .completion-info p {
+            font-size: 14px;
+            color: var(--text-secondary);
+            line-height: 1.5;
+            margin-bottom: 16px;
+        }
+
+        .progress-container {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            width: 100%;
+            max-width: 400px;
+        }
+
+        .progress-bar-bg {
+            flex: 1;
+            height: 8px;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .progress-bar-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--accent), #c084fc);
+            width: 0%;
+            transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .progress-percentage {
+            font-family: 'Outfit', sans-serif;
+            font-weight: 700;
+            font-size: 14px;
+            min-width: 36px;
+        }
+
+        /* Buttons styling */
+        .btn-premium {
+            background-color: var(--accent);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 14px;
+            border: none;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            text-decoration: none;
+        }
+
+        .btn-premium:hover {
+            background-color: var(--accent-hover);
+            transform: translateY(-1px);
+        }
+
+        .btn-premium.btn-outline {
+            background: transparent;
+            border: 1px solid var(--border-dark);
+            color: var(--text-primary);
+        }
+
+        .btn-premium.btn-outline:hover {
+            background-color: rgba(255, 255, 255, 0.03);
+            border-color: var(--text-secondary);
+        }
+
+        /* Event Passes (My Tickets) Layout */
+        .passes-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 28px;
+        }
+
+        .ticket-card {
+            background-color: var(--card-dark);
+            border: 1px solid var(--border-dark);
+            border-radius: 20px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+        }
+
+        .ticket-card::before, .ticket-card::after {
+            content: '';
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background-color: var(--bg-dark);
+            border-radius: 50%;
+            top: 70%;
+            z-index: 10;
+        }
+
+        .ticket-card::before { left: -10px; }
+        .ticket-card::after { right: -10px; }
+
+        .ticket-header {
+            padding: 24px;
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.2), rgba(168, 85, 247, 0.1));
+            border-bottom: 1px dashed var(--border-dark);
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+        }
+
+        .ticket-branding {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .ticket-title {
+            font-family: 'Outfit', sans-serif;
+            font-weight: 800;
+            font-size: 18px;
+            letter-spacing: 0.5px;
+            color: white;
+        }
+
+        .ticket-tier {
+            display: inline-block;
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: #a5b4fc;
+        }
+
+        .ticket-badge {
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .ticket-badge.approved { background: rgba(16, 185, 129, 0.15); color: var(--success); border: 1px solid rgba(16, 185, 129, 0.3); }
+        .ticket-badge.pending { background: rgba(245, 158, 11, 0.15); color: var(--warning); border: 1px solid rgba(245, 158, 11, 0.3); }
+        
+        .ticket-body {
+            padding: 24px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .ticket-meta-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+
+        .ticket-meta-item span {
+            font-size: 11px;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            display: block;
+            margin-bottom: 4px;
+        }
+
+        .ticket-meta-item p {
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        .ticket-qrcode-wrapper {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 16px;
+            background: white;
+            border-radius: 12px;
+            margin: 10px auto;
+            width: 140px;
+            height: 140px;
+        }
+
+        .ticket-qrcode {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        .ticket-footer {
+            padding: 16px 24px;
+            background-color: rgba(255, 255, 255, 0.02);
+            border-top: 1px solid var(--border-dark);
+            text-align: center;
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+
+        /* Empty State Premium Styling */
+        .empty-state-card {
+            background-color: var(--card-dark);
+            border: 1px dashed var(--border-dark);
+            border-radius: 16px;
+            padding: 48px;
+            text-align: center;
+            max-width: 600px;
+            margin: 20px auto;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .empty-state-icon {
+            font-size: 48px;
+            color: var(--text-secondary);
+            margin-bottom: 8px;
+            background: rgba(255, 255, 255, 0.03);
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid var(--border-dark);
+        }
+
+        .empty-state-card h3 {
+            font-family: 'Outfit', sans-serif;
+            font-size: 20px;
+            font-weight: 700;
+        }
+
+        .empty-state-card p {
+            font-size: 14px;
+            color: var(--text-secondary);
+            line-height: 1.5;
+            max-width: 400px;
+            margin-bottom: 8px;
+        }
+
+        /* List Layout for Applications / Sponsorships */
+        .items-list {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .list-card {
+            background-color: var(--card-dark);
+            border: 1px solid var(--border-dark);
+            border-radius: 12px;
+            padding: 20px 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 16px;
+            transition: border-color 0.2s;
+        }
+
+        .list-card:hover {
+            border-color: var(--accent);
+        }
+
+        .list-card-details h4 {
+            font-family: 'Outfit', sans-serif;
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .list-card-details p {
+            font-size: 13px;
+            color: var(--text-secondary);
+        }
+
+        /* Forms Layout (Profile Settings) */
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+        }
+
+        .form-group.full-width {
+            grid-column: span 2;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .form-label {
+            font-size: 13px;
+            font-weight: 600;
+            color: #d1d5db;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .form-input-wrapper {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
+        .form-input-icon {
+            position: absolute;
+            left: 14px;
+            color: var(--text-secondary);
+            font-size: 15px;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 12px 14px 12px 40px;
+            background-color: rgba(255, 255, 255, 0.02);
+            border: 1px solid var(--border-dark);
+            border-radius: 8px;
+            color: var(--text-primary);
+            font-size: 14px;
+            font-family: inherit;
+            transition: all 0.2s;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: var(--accent);
+            background-color: rgba(255, 255, 255, 0.04);
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.25);
+        }
+
+        .form-input.textarea {
+            padding-left: 14px;
+            min-height: 100px;
+            resize: vertical;
+        }
+
+        /* Avatar Upload Form Component */
+        .avatar-upload-row {
+            display: flex;
+            align-items: center;
+            gap: 24px;
+            margin-bottom: 28px;
+            background-color: rgba(255, 255, 255, 0.01);
+            padding: 16px;
+            border-radius: 12px;
+            border: 1px solid var(--border-dark);
+        }
+
+        .upload-avatar-preview {
+            width: 72px;
+            height: 72px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid var(--accent);
+            background: #1f2937;
+        }
+
+        .upload-actions {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .upload-label {
+            font-size: 13px;
+            color: var(--text-secondary);
+        }
+
+        /* Notifications styling */
+        .notifications-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .notification-item {
+            background-color: var(--card-dark);
+            border: 1px solid var(--border-dark);
+            border-radius: 10px;
+            padding: 16px 20px;
+            display: flex;
+            gap: 16px;
+            align-items: flex-start;
+            position: relative;
+            transition: all 0.2s;
+        }
+
+        .notification-item.unread {
+            border-left: 4px solid var(--accent);
+            background-color: rgba(99, 102, 241, 0.03);
+        }
+
+        .notification-icon-wrapper {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background-color: rgba(255, 255, 255, 0.03);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 15px;
+            color: var(--text-secondary);
+        }
+
+        .notification-item.unread .notification-icon-wrapper {
+            background-color: rgba(99, 102, 241, 0.1);
+            color: var(--accent);
+        }
+
+        .notification-content {
+            flex: 1;
+        }
+
+        .notification-title {
+            font-family: 'Outfit', sans-serif;
+            font-weight: 600;
+            font-size: 15px;
+            margin-bottom: 4px;
+        }
+
+        .notification-message {
+            font-size: 13px;
+            color: var(--text-secondary);
+            line-height: 1.5;
+            margin-bottom: 6px;
+        }
+
+        .notification-time {
+            font-size: 11px;
+            color: var(--text-secondary);
+        }
+
+        .btn-mark-read {
+            position: absolute;
+            top: 16px;
+            right: 16px;
+            background: none;
+            border: none;
+            color: var(--text-secondary);
+            font-size: 12px;
+            cursor: pointer;
+            transition: color 0.2s;
+        }
+
+        .btn-mark-read:hover {
+            color: var(--text-primary);
+        }
+
+        /* Toast notifications container */
+        .toast-box {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            background-color: #111827;
+            border: 1px solid var(--border-dark);
+            border-radius: 10px;
+            padding: 16px 20px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+            z-index: 2000;
+            animation: slideUp 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
+        @keyframes slideUp {
+            from { transform: translateY(100px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        /* Loading Spinner */
+        .loader-overlay {
+            position: fixed;
+            inset: 0;
+            background-color: var(--bg-dark);
+            z-index: 9999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .spinner {
+            width: 48px;
+            height: 48px;
+            border: 3px solid rgba(99, 102, 241, 0.2);
+            border-top-color: var(--accent);
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Responsive Breakpoints */
+        @media (max-width: 992px) {
+            .sidebar {
+                transform: translateX(-100%);
+            }
+
+            .sidebar.open {
+                transform: translateX(0);
+            }
+
+            .main-content {
+                margin-left: 0;
+                width: 100%;
+            }
+
+            .menu-toggle-btn {
+                display: block;
+            }
+
+            .top-header {
+                padding: 0 20px;
+            }
+
+            .content-body {
+                padding: 20px;
+            }
+
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+            .form-group.full-width {
+                grid-column: span 1;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Global Loader Overlay -->
+    <div id="dashboard-loader" class="loader-overlay">
+        <div class="spinner"></div>
+        <p style="margin-top: 8px; color: var(--text-secondary); font-size: 14px;">Loading your dashboard portal...</p>
+    </div>
+
+    <div class="app-container">
+        <!-- Sidebar Navigation -->
+        <aside id="sidebar" class="sidebar">
+            <div class="sidebar-header">
+                <img src="assets/images/sbs_logo.png" alt="Logo" class="sidebar-logo-img">
+                <span class="sidebar-logo-text">SBS 2026</span>
+            </div>
+
+            <!-- Profile snippet inside sidebar -->
+            <div class="sidebar-profile">
+                <div class="profile-avatar-wrapper">
+                    <img id="sb-profile-avatar" src="https://api.dicebear.com/7.x/initials/svg?seed=User" alt="Avatar" class="profile-avatar">
+                </div>
+                <h3 id="sb-profile-name" class="profile-name">Loading Profile...</h3>
+                <span id="sb-profile-role" class="profile-role-badge">Attendee</span>
+            </div>
+
+            <nav class="sidebar-nav">
+                <button class="nav-item active" onclick="switchTab('overview')">
+                    <i class="fa-solid fa-chart-line"></i> Overview
+                </button>
+                <button class="nav-item" onclick="switchTab('tickets')">
+                    <i class="fa-solid fa-ticket"></i> My Tickets
+                </button>
+                <button class="nav-item" onclick="switchTab('applications')">
+                    <i class="fa-solid fa-microphone"></i> My Applications
+                </button>
+                <button class="nav-item" onclick="switchTab('sponsorships')">
+                    <i class="fa-solid fa-handshake"></i> My Sponsorships
+                </button>
+                <button class="nav-item" onclick="switchTab('stalls')">
+                    <i class="fa-solid fa-store"></i> My Stalls
+                </button>
+                <button class="nav-item" onclick="switchTab('notifications')">
+                    <i class="fa-solid fa-bell"></i> Notifications
+                    <span id="nav-notif-badge" class="nav-item-badge" style="display:none;">0</span>
+                </button>
+                <button class="nav-item" onclick="switchTab('profile')">
+                    <i class="fa-solid fa-user-gear"></i> Profile
+                </button>
+                <button class="nav-item" onclick="switchTab('settings')">
+                    <i class="fa-solid fa-sliders"></i> Settings
+                </button>
+            </nav>
+
+            <div class="sidebar-footer">
+                <button class="nav-item" style="color: var(--danger);" onclick="triggerLogout()">
+                    <i class="fa-solid fa-right-from-bracket"></i> Logout
+                </button>
+            </div>
+        </aside>
+
+        <!-- Main Workspace Area -->
+        <main class="main-content">
+            <!-- Header Nav -->
+            <header class="top-header">
+                <div class="header-left">
+                    <button class="menu-toggle-btn" onclick="toggleMobileSidebar()">
+                        <i class="fa-solid fa-bars"></i>
+                    </button>
+                    <h2 id="view-title" class="page-title">Dashboard Overview</h2>
+                </div>
+
+                <div class="header-right">
+                    <!-- Notifications Trigger -->
+                    <div class="header-notification" onclick="switchTab('notifications')">
+                        <i class="fa-regular fa-bell"></i>
+                        <span id="hdr-notif-badge" class="header-notification-badge" style="display:none;">0</span>
+                    </div>
+
+                    <div class="header-user-info">
+                        <img id="hdr-user-avatar" src="https://api.dicebear.com/7.x/initials/svg?seed=User" alt="User Avatar" class="header-user-avatar">
+                        <span id="hdr-user-name" class="header-user-name">User</span>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Dashboard Content Panels -->
+            <div class="content-body">
+                
+                <!-- 1. OVERVIEW VIEW -->
+                <div id="view-overview" class="dashboard-view active">
+                    <!-- Metrics row -->
+                    <div class="metrics-grid">
+                        <div class="metric-card">
+                            <div class="metric-info">
+                                <h4>Active Tickets</h4>
+                                <p id="metric-tickets">0</p>
+                            </div>
+                            <div class="metric-icon tickets"><i class="fa-solid fa-ticket"></i></div>
+                        </div>
+                        <div class="metric-card">
+                            <div class="metric-info">
+                                <h4>Applications</h4>
+                                <p id="metric-applications">0</p>
+                            </div>
+                            <div class="metric-icon applications"><i class="fa-solid fa-file-invoice"></i></div>
+                        </div>
+                        <div class="metric-card">
+                            <div class="metric-info">
+                                <h4>Sponsorships</h4>
+                                <p id="metric-sponsorships">0</p>
+                            </div>
+                            <div class="metric-icon sponsorships"><i class="fa-solid fa-handshake"></i></div>
+                        </div>
+                        <div class="metric-card">
+                            <div class="metric-info">
+                                <h4>Current Role</h4>
+                                <p id="metric-role" style="font-size: 16px; margin-top: 8px;">Attendee</p>
+                            </div>
+                            <div class="metric-icon role"><i class="fa-solid fa-user-tag"></i></div>
+                        </div>
+                    </div>
+
+                    <!-- Profile completeness block -->
+                    <div class="completion-card">
+                        <div class="completion-info">
+                            <h3>Complete Your Profile</h3>
+                            <p>Filling out all your organization details, LinkedIn handles, and uploading a professional avatar helps Summit organizers review applications faster.</p>
+                            <div class="progress-container">
+                                <div class="progress-bar-bg">
+                                    <div id="profile-progress-bar" class="progress-bar-fill"></div>
+                                </div>
+                                <span id="profile-progress-pct" class="progress-percentage">0%</span>
+                            </div>
+                        </div>
+                        <button class="btn-premium" onclick="switchTab('profile')">Edit Profile <i class="fa-solid fa-chevron-right"></i></button>
+                    </div>
+
+                    <!-- Welcome summary card -->
+                    <div class="metric-card" style="flex-direction: column; align-items: stretch; gap: 16px; margin-bottom: 24px;">
+                        <h3 style="font-family: 'Outfit', sans-serif;">Welcome to Startup Business Summit 2026</h3>
+                        <p style="font-size: 14px; color: var(--text-secondary); line-height: 1.6;">
+                            This personal dashboard portal keeps you connected with all your event bookings, speaker nominations, startup pitch submissions, and sponsorship bookings. Check status of passes and update your professional profile details securely.
+                        </p>
+                        <div style="display:flex; gap:12px; margin-top: 8px;">
+                            <a href="register.html" class="btn-premium" style="font-size: 13px;">Browse Tickets</a>
+                            <a href="sponsorship.html" class="btn-premium btn-outline" style="font-size: 13px;">Sponsorship Inquiries</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 2. MY TICKETS VIEW -->
+                <div id="view-tickets" class="dashboard-view">
+                    <div id="tickets-container" class="passes-grid">
+                        <!-- Populated dynamically -->
+                    </div>
+                    <!-- Empty State Tickets -->
+                    <div id="tickets-empty" class="empty-state-card" style="display:none;">
+                        <div class="empty-state-icon"><i class="fa-solid fa-ticket"></i></div>
+                        <h3>No Active passes found</h3>
+                        <p>You haven't registered or purchased any event passes yet. Browse available options to secure your place at India's largest networking summit.</p>
+                        <a href="register.html" class="btn-premium"><i class="fa-solid fa-cart-shopping"></i> Purchase Ticket Passes</a>
+                    </div>
+                </div>
+
+                <!-- 3. MY APPLICATIONS VIEW -->
+                <div id="view-applications" class="dashboard-view">
+                    <div id="applications-container" class="items-list">
+                        <!-- Populated dynamically -->
+                    </div>
+                    <!-- Empty State Applications -->
+                    <div id="applications-empty" class="empty-state-card" style="display:none;">
+                        <div class="empty-state-icon"><i class="fa-solid fa-microphone"></i></div>
+                        <h3>No Applications found</h3>
+                        <p>Nominate yourself or apply to speak on our speaker panels, presentation stages, or award lists.</p>
+                        <div style="display:flex; gap:12px; margin-top: 8px;">
+                            <a href="speakers.html" class="btn-premium"><i class="fa-solid fa-microphone"></i> Speaker Applications</a>
+                            <a href="register.html" class="btn-premium btn-outline"><i class="fa-solid fa-award"></i> Award Nominations</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 4. MY SPONSORSHIPS VIEW -->
+                <div id="view-sponsorships" class="dashboard-view">
+                    <div id="sponsorships-container" class="items-list">
+                        <!-- Populated dynamically -->
+                    </div>
+                    <!-- Empty State Sponsorships -->
+                    <div id="sponsorships-empty" class="empty-state-card" style="display:none;">
+                        <div class="empty-state-icon"><i class="fa-solid fa-handshake"></i></div>
+                        <h3>No Sponsorship inquiries</h3>
+                        <p>Connect your brand with leaders, entrepreneurs, and investors by securing premium Title, Powered, or Associate sponsorships.</p>
+                        <a href="sponsorship.html" class="btn-premium"><i class="fa-solid fa-briefcase"></i> Inquire about Sponsorship</a>
+                    </div>
+                </div>
+
+                <!-- 5. MY STALLS VIEW -->
+                <div id="view-stalls" class="dashboard-view">
+                    <div id="stalls-container" class="items-list">
+                        <!-- Populated dynamically -->
+                    </div>
+                    <!-- Empty State Stalls -->
+                    <div id="stalls-empty" class="empty-state-card" style="display:none;">
+                        <div class="empty-state-icon"><i class="fa-solid fa-store"></i></div>
+                        <h3>No Stall bookings found</h3>
+                        <p>Exhibit your startup, franchise, or products directly to potential clients. Book executive pods or premium double stalls.</p>
+                        <a href="book_stall.html" class="btn-premium"><i class="fa-solid fa-store"></i> Book Exhibition Stall</a>
+                    </div>
+                </div>
+
+                <!-- 6. NOTIFICATIONS VIEW -->
+                <div id="view-notifications" class="dashboard-view">
+                    <div id="notifications-container" class="notifications-list">
+                        <!-- Populated dynamically -->
+                    </div>
+                    <!-- Empty State Notifications -->
+                    <div id="notifications-empty" class="empty-state-card" style="display:none;">
+                        <div class="empty-state-icon"><i class="fa-regular fa-bell-slash"></i></div>
+                        <h3>All caught up!</h3>
+                        <p>You have no notifications or messages at this time. Announcements will appear here.</p>
+                    </div>
+                </div>
+
+                <!-- 7. PROFILE VIEW -->
+                <div id="view-profile" class="dashboard-view">
+                    <div class="metric-card" style="flex-direction: column; align-items: stretch; gap: 24px; padding: 32px;">
+                        <h3 style="font-family: 'Outfit', sans-serif;">Manage Personal Profile Details</h3>
+                        
+                        <!-- Avatar Photo uploader component -->
+                        <div class="avatar-upload-row">
+                            <img id="profile-avatar-preview" src="https://api.dicebear.com/7.x/initials/svg?seed=User" alt="Avatar Preview" class="upload-avatar-preview">
+                            <div class="upload-actions">
+                                <label class="form-label" style="font-size: 12px; margin-bottom: 2px;">Profile Photo</label>
+                                <input type="file" id="avatar-file-input" accept="image/png, image/jpeg" style="display:none;">
+                                <button type="button" class="btn-premium btn-outline" style="padding: 6px 14px; font-size: 12px;" onclick="triggerAvatarFileInput()">
+                                    <i class="fa-solid fa-cloud-arrow-up"></i> Choose Photo
+                                </button>
+                                <span class="upload-label">PNG, JPEG up to 3MB.</span>
+                            </div>
+                        </div>
+
+                        <form id="profile-form">
+                            <div class="form-grid">
+                                <!-- Full name -->
+                                <div class="form-group">
+                                    <label class="form-label">Full Name</label>
+                                    <div class="form-input-wrapper">
+                                        <i class="fa-regular fa-user form-input-icon"></i>
+                                        <input type="text" id="prof-full-name" class="form-input" placeholder="John Doe" required>
+                                    </div>
+                                </div>
+
+                                <!-- Phone -->
+                                <div class="form-group">
+                                    <label class="form-label">Phone Number</label>
+                                    <div class="form-input-wrapper">
+                                        <i class="fa-solid fa-phone form-input-icon"></i>
+                                        <input type="tel" id="prof-phone" class="form-input" placeholder="+91 9876543210">
+                                    </div>
+                                </div>
+
+                                <!-- Organization -->
+                                <div class="form-group">
+                                    <label class="form-label">Organization Name</label>
+                                    <div class="form-input-wrapper">
+                                        <i class="fa-solid fa-building form-input-icon"></i>
+                                        <input type="text" id="prof-organization" class="form-input" placeholder="Acme Corporation">
+                                    </div>
+                                </div>
+
+                                <!-- Designation -->
+                                <div class="form-group">
+                                    <label class="form-label">Designation / Role</label>
+                                    <div class="form-input-wrapper">
+                                        <i class="fa-solid fa-briefcase form-input-icon"></i>
+                                        <input type="text" id="prof-designation" class="form-input" placeholder="Founder & CEO">
+                                    </div>
+                                </div>
+
+                                <!-- LinkedIn -->
+                                <div class="form-group">
+                                    <label class="form-label">LinkedIn URL</label>
+                                    <div class="form-input-wrapper">
+                                        <i class="fa-brands fa-linkedin form-input-icon"></i>
+                                        <input type="url" id="prof-linkedin" class="form-input" placeholder="https://linkedin.com/in/username">
+                                    </div>
+                                </div>
+
+                                <!-- Website -->
+                                <div class="form-group">
+                                    <label class="form-label">Website URL</label>
+                                    <div class="form-input-wrapper">
+                                        <i class="fa-solid fa-globe form-input-icon"></i>
+                                        <input type="url" id="prof-website" class="form-input" placeholder="https://company.com">
+                                    </div>
+                                </div>
+
+                                <!-- Bio -->
+                                <div class="form-group full-width">
+                                    <label class="form-label">Short Bio</label>
+                                    <textarea id="prof-bio" class="form-input textarea" placeholder="Tell us about your professional background and interests..."></textarea>
+                                </div>
+
+                                <!-- Save button -->
+                                <div class="form-group full-width" style="margin-top: 12px; align-items: flex-end;">
+                                    <button type="submit" id="btn-save-profile" class="btn-premium" style="width: 180px;">
+                                        <span>Save Changes</span>
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- 8. SETTINGS VIEW -->
+                <div id="view-settings" class="dashboard-view">
+                    <div class="metric-card" style="flex-direction: column; align-items: stretch; gap: 24px; padding: 32px;">
+                        <h3 style="font-family: 'Outfit', sans-serif;">System Settings</h3>
+                        
+                        <div style="border-bottom: 1px solid var(--border-dark); padding-bottom: 20px;">
+                            <h4 style="margin-bottom: 10px; font-family: 'Outfit', sans-serif;">Notification Preferences</h4>
+                            <label class="checkbox-container" style="display:flex; align-items:center; gap:10px; font-size:14px; color: var(--text-secondary); cursor: pointer; user-select: none;">
+                                <input type="checkbox" id="set-notif-email" checked style="accent-color: var(--accent);">
+                                Receive email announcements regarding tickets and nominations
+                            </label>
+                        </div>
+
+                        <div>
+                            <h4 style="margin-bottom: 10px; font-family: 'Outfit', sans-serif;">Account Security</h4>
+                            <p style="font-size:13px; color: var(--text-secondary); margin-bottom: 14px;">Trigger a secure password reset link to your registered email address.</p>
+                            <button type="button" class="btn-premium btn-outline" onclick="triggerPasswordReset()">Send Reset Link</button>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </main>
+    </div>
+
+    <!-- SDK / Script libraries -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="assets/js/supabase.js"></script>
+    <script src="assets/js/auth.js"></script>
+    <script src="assets/js/route_guard.js"></script>
+
+    <!-- UI Handler Scripts -->
+    <script>
+        let currentUser = null;
+        let userProfile = null;
+        let userNotifications = [];
+
+        // Check auth session on startup
+        document.addEventListener('DOMContentLoaded', async () => {
+            if (!window.supabaseClient) {
+                console.error("Supabase client is missing.");
+                return;
+            }
+
+            try {
+                const { data: { session } } = await window.supabaseClient.auth.getSession();
+                if (!session) {
+                    window.location.href = 'index.html';
+                    return;
+                }
+                currentUser = session.user;
+                
+                // Load User Data
+                await loadUserProfile();
+                await fetchRegistrationsData();
+                await loadNotifications();
+
+                // Hide startup loader
+                const loader = document.getElementById('dashboard-loader');
+                if (loader) {
+                    loader.style.opacity = '0';
+                    setTimeout(() => loader.remove(), 300);
+                }
+            } catch (err) {
+                console.error("Dashboard initialization exception:", err);
+            }
+        });
+
+        // Load User Profile Details
+        async function loadUserProfile() {
+            if (!currentUser) return;
+            
+            try {
+                // Fetch profile using helper
+                if (window.authAPI) {
+                    userProfile = await window.authAPI.getUserProfile(currentUser.id);
+                }
+
+                // Fallback / default fields if profile row is missing
+                if (!userProfile) {
+                    userProfile = {
+                        full_name: currentUser.user_metadata?.full_name || 'Summit Attendee',
+                        phone: currentUser.user_metadata?.phone || '',
+                        role: currentUser.user_metadata?.role || 'attendee',
+                        organization: currentUser.user_metadata?.organization || '',
+                        designation: currentUser.user_metadata?.designation || '',
+                        linkedin_url: currentUser.user_metadata?.linkedin_url || '',
+                        website: '',
+                        bio: '',
+                        avatar_url: ''
+                    };
+                }
+
+                // Update UI placeholders
+                const nameStr = userProfile.full_name || 'Summit Attendee';
+                document.getElementById('sb-profile-name').innerText = nameStr;
+                document.getElementById('hdr-user-name').innerText = nameStr;
+                
+                const rolePretty = userProfile.role.charAt(0).toUpperCase() + userProfile.role.slice(1);
+                document.getElementById('sb-profile-role').innerText = rolePretty;
+                document.getElementById('metric-role').innerText = rolePretty;
+
+                // Load Profile Avatars
+                const avatar = userProfile.avatar_url || `https://api.dicebear.com/7.x/initials/svg?seed=${encodeURIComponent(nameStr)}`;
+                document.getElementById('sb-profile-avatar').src = avatar;
+                document.getElementById('hdr-user-avatar').src = avatar;
+                document.getElementById('profile-avatar-preview').src = avatar;
+
+                // Populate form fields
+                document.getElementById('prof-full-name').value = userProfile.full_name || '';
+                document.getElementById('prof-phone').value = userProfile.phone || '';
+                document.getElementById('prof-organization').value = userProfile.organization || '';
+                document.getElementById('prof-designation').value = userProfile.designation || '';
+                document.getElementById('prof-linkedin').value = userProfile.linkedin_url || '';
+                document.getElementById('prof-website').value = userProfile.website || '';
+                document.getElementById('prof-bio').value = userProfile.bio || '';
+
+                // Calculate progress completion percentage
+                calculateProfileProgress();
+            } catch (err) {
+                console.error("Error loading user profile details:", err);
+            }
+        }
+
+        // Calculate Profile completion metric
+        function calculateProfileProgress() {
+            if (!userProfile) return;
+            const fields = [
+                userProfile.full_name,
+                userProfile.phone,
+                userProfile.organization,
+                userProfile.designation,
+                userProfile.linkedin_url,
+                userProfile.website,
+                userProfile.bio,
+                userProfile.avatar_url
+            ];
+            const filledCount = fields.filter(f => f && f.trim() !== '').length;
+            const percentage = Math.round((filledCount / fields.length) * 100);
+
+            document.getElementById('profile-progress-bar').style.width = `${percentage}%`;
+            document.getElementById('profile-progress-pct').innerText = `${percentage}%`;
+        }
+
+        // Fetch bookings / registration counts dynamically
+        async function fetchRegistrationsData() {
+            if (!currentUser || !window.supabaseClient) return;
+            const email = currentUser.email;
+
+            try {
+                // Fetch datasets matching email concurrently
+                const [ticketsRes, exhibitorsRes, sponsorsRes, awardsRes, presentersRes, launchRes] = await Promise.all([
+                    window.supabaseClient.from('ticket_registrations').select('*').eq('email', email).eq('is_deleted', false),
+                    window.supabaseClient.from('exhibitor_bookings').select('*').eq('email', email).eq('is_deleted', false),
+                    window.supabaseClient.from('sponsorship_inquiries').select('*').eq('email', email).eq('is_deleted', false),
+                    window.supabaseClient.from('award_nominations').select('*').eq('email', email).eq('is_deleted', false),
+                    window.supabaseClient.from('presenter_applications').select('*').eq('email', email).eq('is_deleted', false),
+                    window.supabaseClient.from('launch_platform_applications').select('*').eq('email', email).eq('is_deleted', false)
+                ]);
+
+                // 1. Render Tickets Passes
+                const ticketsList = ticketsRes.data || [];
+                document.getElementById('metric-tickets').innerText = ticketsList.length;
+                renderTicketsList(ticketsList);
+
+                // 2. Render Applications (Presenter + Launch Platform + Awards)
+                const launchList = launchRes.data || [];
+                const presenterList = presentersRes.data || [];
+                const awardsList = awardsRes.data || [];
+                const totalApplications = launchList.length + presenterList.length + awardsList.length;
+                document.getElementById('metric-applications').innerText = totalApplications;
+                renderApplicationsList(presenterList, launchList, awardsList);
+
+                // 3. Render Sponsorships
+                const sponsorshipsList = sponsorsRes.data || [];
+                document.getElementById('metric-sponsorships').innerText = sponsorshipsList.length;
+                renderSponsorshipsList(sponsorshipsList);
+
+                // 4. Render Stalls (Exhibitor Bookings)
+                const stallsList = exhibitorsRes.data || [];
+                renderStallsList(stallsList);
+
+            } catch (err) {
+                console.error("Error reading database registration metrics:", err);
+            }
+        }
+
+        // Render tickets digital passes
+        function renderTicketsList(tickets) {
+            const container = document.getElementById('tickets-container');
+            const emptyEl = document.getElementById('tickets-empty');
+            container.innerHTML = '';
+
+            if (tickets.length === 0) {
+                emptyEl.style.display = 'flex';
+                return;
+            }
+            emptyEl.style.display = 'none';
+
+            tickets.forEach(ticket => {
+                const uniqueId = ticket.id ? `SBS-${ticket.id.toString().substring(0, 5).toUpperCase()}` : 'SBS-PENDING';
+                const passTierPretty = (ticket.pass_tier || 'general').replace('_', ' ').toUpperCase();
+                
+                // Formulate QR code payload
+                const qrPayload = encodeURIComponent(`SBS2026|ID:${uniqueId}|Tier:${passTierPretty}|Holder:${ticket.full_name}`);
+                const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${qrPayload}&color=030712`;
+
+                const card = document.createElement('div');
+                card.className = 'ticket-card';
+                card.innerHTML = `
+                    <div class="ticket-header">
+                        <div class="ticket-branding">
+                            <span class="ticket-title">SBS 2026 PASS</span>
+                            <span class="ticket-tier">${passTierPretty}</span>
+                        </div>
+                        <span class="ticket-badge ${ticket.submission_status === 'approved' ? 'approved' : 'pending'}">
+                            ${ticket.submission_status || 'pending'}
+                        </span>
+                    </div>
+                    <div class="ticket-body">
+                        <div class="ticket-meta-grid">
+                            <div class="ticket-meta-item">
+                                <span>Pass Holder</span>
+                                <p>${ticket.full_name || 'Attendee'}</p>
+                            </div>
+                            <div class="ticket-meta-item">
+                                <span>Ticket ID</span>
+                                <p>${uniqueId}</p>
+                            </div>
+                            <div class="ticket-meta-item">
+                                <span>Quantity</span>
+                                <p>${ticket.quantity || 1} Pass(es)</p>
+                            </div>
+                            <div class="ticket-meta-item">
+                                <span>Payment Amount</span>
+                                <p>${ticket.payment_amount ? 'INR ' + ticket.payment_amount : 'Free / Complimentary'}</p>
+                            </div>
+                        </div>
+                        
+                        <div class="ticket-qrcode-wrapper">
+                            <img src="${qrUrl}" alt="Ticket QR Code" class="ticket-qrcode">
+                        </div>
+                    </div>
+                    <div class="ticket-footer">
+                        📅 July 19th, 2026 | Bharat Mandapam, New Delhi
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        // Render speaker/launch applications list
+        function renderApplicationsList(presenters, startups, awards) {
+            const container = document.getElementById('applications-container');
+            const emptyEl = document.getElementById('applications-empty');
+            container.innerHTML = '';
+
+            const total = presenters.length + startups.length + awards.length;
+            if (total === 0) {
+                emptyEl.style.display = 'flex';
+                return;
+            }
+            emptyEl.style.display = 'none';
+
+            // Render presenters/speakers
+            presenters.forEach(app => {
+                const card = document.createElement('div');
+                card.className = 'list-card';
+                card.innerHTML = `
+                    <div class="list-card-details">
+                        <h4>Speaker & Presentation Proposal</h4>
+                        <p>Topic: ${app.presentation_topic || 'Panel Discussion'} | Role: ${(app.role_type || 'speaker').toUpperCase()}</p>
+                    </div>
+                    <span class="ticket-badge ${app.submission_status === 'approved' ? 'approved' : 'pending'}">${app.submission_status || 'new'}</span>
+                `;
+                container.appendChild(card);
+            });
+
+            // Render startups
+            startups.forEach(app => {
+                const card = document.createElement('div');
+                card.className = 'list-card';
+                card.innerHTML = `
+                    <div class="list-card-details">
+                        <h4>Startup Launch Platform Application</h4>
+                        <p>Brand: ${app.startup_name || 'My Startup'} | Deck: <a href="${app.pitch_deck_url}" target="_blank" style="color:var(--accent);">View Slide Deck</a></p>
+                    </div>
+                    <span class="ticket-badge ${app.submission_status === 'approved' ? 'approved' : 'pending'}">${app.submission_status || 'new'}</span>
+                `;
+                container.appendChild(card);
+            });
+
+            // Render awards
+            awards.forEach(app => {
+                const card = document.createElement('div');
+                card.className = 'list-card';
+                card.innerHTML = `
+                    <div class="list-card-details">
+                        <h4>Award Nomination Application</h4>
+                        <p>Nominee: ${app.nominee_name || 'My Brand'} | Category: ${app.award_category || 'Global Innovation'}</p>
+                    </div>
+                    <span class="ticket-badge ${app.submission_status === 'approved' ? 'approved' : 'pending'}">${app.submission_status || 'new'}</span>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        // Render sponsorships
+        function renderSponsorshipsList(sponsorships) {
+            const container = document.getElementById('sponsorships-container');
+            const emptyEl = document.getElementById('sponsorships-empty');
+            container.innerHTML = '';
+
+            if (sponsorships.length === 0) {
+                emptyEl.style.display = 'flex';
+                return;
+            }
+            emptyEl.style.display = 'none';
+
+            sponsorships.forEach(sp => {
+                const card = document.createElement('div');
+                card.className = 'list-card';
+                card.innerHTML = `
+                    <div class="list-card-details">
+                        <h4>Corporate Sponsorship Inquiry</h4>
+                        <p>Package Preference: ${(sp.interested_package || 'associate').toUpperCase()} Sponsor</p>
+                    </div>
+                    <span class="ticket-badge ${sp.submission_status === 'approved' ? 'approved' : 'pending'}">${sp.submission_status || 'new'}</span>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        // Render stalls
+        function renderStallsList(stalls) {
+            const container = document.getElementById('stalls-container');
+            const emptyEl = document.getElementById('stalls-empty');
+            container.innerHTML = '';
+
+            if (stalls.length === 0) {
+                emptyEl.style.display = 'flex';
+                return;
+            }
+            emptyEl.style.display = 'none';
+
+            stalls.forEach(st => {
+                const card = document.createElement('div');
+                card.className = 'list-card';
+                card.innerHTML = `
+                    <div class="list-card-details">
+                        <h4>Exhibition Stall Booking</h4>
+                        <p>Space Layout: ${(st.package_preference || 'pod').toUpperCase()} space option | Company: ${st.company_name}</p>
+                    </div>
+                    <span class="ticket-badge ${st.submission_status === 'approved' ? 'approved' : 'pending'}">${st.submission_status || 'new'}</span>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        // Load Notifications list (with local storage fallback)
+        async function loadNotifications() {
+            if (!currentUser || !window.supabaseClient) return;
+
+            try {
+                // Try querying Supabase public.notifications
+                const { data, error } = await window.supabaseClient
+                    .from('notifications')
+                    .select('*')
+                    .eq('user_id', currentUser.id)
+                    .order('created_at', { ascending: false });
+
+                if (error) {
+                    // Fail silently, fallback to localStorage
+                    throw error;
+                }
+                userNotifications = data || [];
+            } catch (err) {
+                console.warn("Notifications table query failed. Loading client fallback messages.");
+                loadFallbackNotifications();
+            }
+
+            renderNotificationsList();
+        }
+
+        // Local Storage notifications manager
+        function loadFallbackNotifications() {
+            const storageKey = `sbs_notifs_${currentUser.id}`;
+            let stored = localStorage.getItem(storageKey);
+            
+            if (stored) {
+                userNotifications = JSON.parse(stored);
+            } else {
+                // Seed default mock messages
+                userNotifications = [
+                    {
+                        id: 'seed-notif-1',
+                        user_id: currentUser.id,
+                        title: 'Welcome to Startup Business Summit 2026',
+                        message: 'Complete your professional profile fields (LinkedIn handle, website url, short bio) to help us review nominations faster.',
+                        is_read: false,
+                        created_at: new Date(Date.now() - 3600000).toISOString() // 1hr ago
+                    },
+                    {
+                        id: 'seed-notif-2',
+                        user_id: currentUser.id,
+                        title: 'Portal Security Configured Successfully',
+                        message: 'Your personal dashboard matches your registered role. Browse ticket passes to purchase entries.',
+                        is_read: false,
+                        created_at: new Date(Date.now() - 7200000).toISOString() // 2hrs ago
+                    }
+                ];
+                saveFallbackNotifications();
+            }
+        }
+
+        function saveFallbackNotifications() {
+            const storageKey = `sbs_notifs_${currentUser.id}`;
+            localStorage.setItem(storageKey, JSON.stringify(userNotifications));
+        }
+
+        // Render notifications
+        function renderNotificationsList() {
+            const container = document.getElementById('notifications-container');
+            const emptyEl = document.getElementById('notifications-empty');
+            container.innerHTML = '';
+
+            const unreadList = userNotifications.filter(n => !n.is_read);
+            updateNotificationBadges(unreadList.length);
+
+            if (userNotifications.length === 0) {
+                emptyEl.style.display = 'flex';
+                return;
+            }
+            emptyEl.style.display = 'none';
+
+            userNotifications.forEach(notif => {
+                const item = document.createElement('div');
+                item.className = `notification-item ${notif.is_read ? '' : 'unread'}`;
+                item.innerHTML = `
+                    <div class="notification-icon-wrapper">
+                        <i class="fa-regular fa-envelope-open"></i>
+                    </div>
+                    <div class="notification-content">
+                        <h4 class="notification-title">${notif.title}</h4>
+                        <p class="notification-message">${notif.message}</p>
+                        <span class="notification-time">${new Date(notif.created_at).toLocaleDateString()} at ${new Date(notif.created_at).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}</span>
+                    </div>
+                    ${notif.is_read ? '' : `<button class="btn-mark-read" onclick="markNotificationRead('${notif.id}')"><i class="fa-solid fa-check"></i> Read</button>`}
+                `;
+                container.appendChild(item);
+            });
+        }
+
+        // Update counts
+        function updateNotificationBadges(count) {
+            const navBadge = document.getElementById('nav-notif-badge');
+            const hdrBadge = document.getElementById('hdr-notif-badge');
+
+            if (count > 0) {
+                navBadge.innerText = count;
+                navBadge.style.display = 'inline-block';
+                hdrBadge.innerText = count;
+                hdrBadge.style.display = 'flex';
+            } else {
+                navBadge.style.display = 'none';
+                hdrBadge.style.display = 'none';
+            }
+        }
+
+        // Mark notification as read
+        async function markNotificationRead(id) {
+            if (!currentUser) return;
+
+            try {
+                // Attempt Supabase update
+                if (window.supabaseClient) {
+                    const { error } = await window.supabaseClient
+                        .from('notifications')
+                        .update({ is_read: true })
+                        .eq('id', id);
+                    
+                    if (error) throw error;
+                }
+                
+                // Update local list
+                userNotifications = userNotifications.map(n => n.id === id ? { ...n, is_read: true } : n);
+            } catch (err) {
+                // Update local storage fallback
+                userNotifications = userNotifications.map(n => n.id === id ? { ...n, is_read: true } : n);
+                saveFallbackNotifications();
+            }
+
+            renderNotificationsList();
+            showToast("Notification marked as read");
+        }
+
+        // Handle Avatar File Uploads
+        function triggerAvatarFileInput() {
+            document.getElementById('avatar-file-input').click();
+        }
+
+        document.getElementById('avatar-file-input').addEventListener('change', async (e) => {
+            const file = e.target.files[0];
+            if (!file || !currentUser || !window.supabaseClient) return;
+
+            // Block file > 3MB
+            if (file.size > 3 * 1024 * 1024) {
+                alert("File size limit exceeded: Avatar size must be under 3MB.");
+                return;
+            }
+
+            const loader = document.getElementById('dashboard-loader');
+            const saveBtn = document.getElementById('btn-save-profile');
+            saveBtn.disabled = true;
+            saveBtn.innerHTML = '<div class="spinner" style="width: 14px; height: 14px;"></div> Uploading...';
+
+            try {
+                const fileExt = file.name.split('.').pop();
+                const fileName = `${currentUser.id}_avatar.${fileExt}`;
+                const filePath = `${fileName}`;
+
+                // Upload to profile_images storage bucket
+                const { error: uploadError } = await window.supabaseClient.storage
+                    .from('profile_images')
+                    .upload(filePath, file, { upsert: true });
+
+                if (uploadError) throw uploadError;
+
+                // Get public URL
+                const { data: { publicUrl } } = window.supabaseClient.storage
+                    .from('profile_images')
+                    .getPublicUrl(filePath);
+
+                // Update preview avatar elements
+                document.getElementById('profile-avatar-preview').src = publicUrl;
+                document.getElementById('sb-profile-avatar').src = publicUrl;
+                document.getElementById('hdr-user-avatar').src = publicUrl;
+
+                userProfile.avatar_url = publicUrl;
+                calculateProfileProgress();
+                showToast("Avatar photo uploaded successfully! Click save to update your profile.");
+            } catch (err) {
+                console.error("Avatar upload exception:", err);
+                alert("Avatar upload failed: " + (err.message || err));
+            } finally {
+                saveBtn.disabled = false;
+                saveBtn.innerHTML = '<span>Save Changes</span>';
+            }
+        });
+
+        // Submit Profile edit form
+        const profileForm = document.getElementById('profile-form');
+        profileForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            if (!currentUser || !window.supabaseClient) return;
+
+            const name = document.getElementById('prof-full-name').value.trim();
+            const phone = document.getElementById('prof-phone').value.trim();
+            const organization = document.getElementById('prof-organization').value.trim();
+            const designation = document.getElementById('prof-designation').value.trim();
+            const linkedin = document.getElementById('prof-linkedin').value.trim();
+            const website = document.getElementById('prof-website').value.trim();
+            const bio = document.getElementById('prof-bio').value.trim();
+            const avatarUrl = userProfile.avatar_url || '';
+
+            const saveBtn = document.getElementById('btn-save-profile');
+            saveBtn.disabled = true;
+            saveBtn.innerHTML = 'Saving...';
+
+            try {
+                // Upsert to user_profiles table
+                const { error } = await window.supabaseClient
+                    .from('user_profiles')
+                    .upsert({
+                        id: currentUser.id,
+                        full_name: name,
+                        phone: phone,
+                        organization: organization,
+                        designation: designation,
+                        linkedin_url: linkedin,
+                        website: website,
+                        bio: bio,
+                        avatar_url: avatarUrl,
+                        updated_at: new Date().toISOString()
+                    });
+
+                if (error) throw error;
+
+                // Sync local state
+                userProfile.full_name = name;
+                userProfile.phone = phone;
+                userProfile.organization = organization;
+                userProfile.designation = designation;
+                userProfile.linkedin_url = linkedin;
+                userProfile.website = website;
+                userProfile.bio = bio;
+
+                document.getElementById('sb-profile-name').innerText = name;
+                document.getElementById('hdr-user-name').innerText = name;
+                calculateProfileProgress();
+                showToast("Profile updated successfully!");
+
+            } catch (err) {
+                console.error("Profile upsert exception:", err);
+                alert("Failed to save profile changes: " + (err.message || err));
+            } finally {
+                saveBtn.disabled = false;
+                saveBtn.innerHTML = '<span>Save Changes</span>';
+            }
+        });
+
+        // Toggle Sidebar view visibility
+        function switchTab(tabId) {
+            // Adjust active links
+            const navItems = document.querySelectorAll('.nav-item');
+            navItems.forEach(item => item.classList.remove('active'));
+            
+            // Highlight matching nav item
+            const matchBtn = Array.from(navItems).find(btn => {
+                const clickAttr = btn.getAttribute('onclick');
+                return clickAttr && clickAttr.includes(tabId);
+            });
+            if (matchBtn) matchBtn.classList.add('active');
+
+            // Toggle active content views
+            const views = document.querySelectorAll('.dashboard-view');
+            views.forEach(v => v.classList.remove('active'));
+            
+            const targetView = document.getElementById(`view-${tabId}`);
+            if (targetView) targetView.classList.add('active');
+
+            // Update header title
+            const titles = {
+                overview: 'Dashboard Overview',
+                tickets: 'My Event Tickets',
+                applications: 'My Presenter Applications',
+                sponsorships: 'My Corporate Sponsorships',
+                stalls: 'My Stall Bookings',
+                notifications: 'Notification Inbox',
+                profile: 'Edit Personal Profile',
+                settings: 'System Settings'
+            };
+            document.getElementById('view-title').innerText = titles[tabId] || 'User Dashboard';
+
+            // Close mobile sidebar if open
+            const sidebar = document.getElementById('sidebar');
+            if (sidebar.classList.contains('open')) {
+                sidebar.classList.remove('open');
+            }
+        }
+
+        // Trigger password reset email
+        async function triggerPasswordReset() {
+            if (!currentUser || !window.supabaseClient) return;
+            try {
+                const { error } = await window.supabaseClient.auth.resetPasswordForEmail(currentUser.email, {
+                    redirectTo: 'https://www.prakharenterprises.in/reset-password.html'
+                });
+                if (error) throw error;
+                showToast("Reset password link has been sent to your email!");
+            } catch (err) {
+                alert("Failed to send link: " + (err.message || err));
+            }
+        }
+
+        // User sign out trigger
+        async function triggerLogout() {
+            if (window.authAPI) {
+                await window.authAPI.logout();
+            }
+        }
+
+        // Toggle mobile sidebar drawer
+        function toggleMobileSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            sidebar.classList.toggle('open');
+        }
+
+        // Display Toast popup
+        function showToast(message) {
+            // Remove existing toasts
+            const oldToast = document.querySelector('.toast-box');
+            if (oldToast) oldToast.remove();
+
+            const toast = document.createElement('div');
+            toast.className = 'toast-box';
+            toast.innerHTML = `
+                <div style="color:var(--success); font-size:18px;"><i class="fa-solid fa-circle-check"></i></div>
+                <span style="font-size:13px; font-weight:600; color:white;">${message}</span>
+            `;
+            document.body.appendChild(toast);
+
+            setTimeout(() => {
+                toast.style.transition = 'all 0.3s ease';
+                toast.style.opacity = '0';
+                toast.style.transform = 'translateY(20px)';
+                setTimeout(() => toast.remove(), 300);
+            }, 3500);
+        }
+    </script>
+</body>
+</html>
