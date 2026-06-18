@@ -158,6 +158,13 @@ document.addEventListener('DOMContentLoaded', async () => {
                             e.preventDefault();
                             if (window.authAPI) {
                                 await window.authAPI.logout();
+                            } else {
+                                try {
+                                    await client.auth.signOut();
+                                } catch (err) {
+                                    console.error("SignOut fallback failed:", err);
+                                }
+                                window.location.href = 'index.html';
                             }
                         });
                         
@@ -168,7 +175,6 @@ document.addEventListener('DOMContentLoaded', async () => {
             });
         };
         updateNavbar();
-        document.addEventListener('DOMContentLoaded', updateNavbar);
     }
     
     if (!isPublic) {
