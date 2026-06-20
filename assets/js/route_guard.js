@@ -217,7 +217,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                 if (mainContent) mainContent.style.display = 'block';
             } else {
                 // Not authenticated: Enforce launch gate layout only
-                if (gate) gate.style.display = 'block';
+                if (gate) gate.style.display = 'flex';
                 if (mainContent) mainContent.style.display = 'none';
                 startCountdown();
             }

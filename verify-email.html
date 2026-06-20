@@ -8,20 +8,20 @@
     <!-- Fonts & Icons -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <!-- CSS Style Setup -->
     <style>
         :root {
-            --bg-color: #030712;
-            --card-bg: #0b0f19;
-            --text-main: #f9fafb;
-            --text-muted: #9ca3af;
-            --primary: #6366f1;
-            --primary-hover: #4f46e5;
-            --border: #1f2937;
-            --input-bg: #111827;
+            --bg-color: #f8fafc;
+            --card-bg: #ffffff;
+            --text-main: #0f172a;
+            --text-muted: #475569;
+            --primary: #7f00ff;
+            --primary-hover: #0072ff;
+            --border: #e2e8f0;
+            --input-bg: #ffffff;
             --error: #ef4444;
             --success: #10b981;
             --warning: #f59e0b;
@@ -34,7 +34,7 @@
         }
 
         body {
-            font-family: 'Inter', sans-serif;
+            font-family: 'Outfit', 'Inter', sans-serif;
             background-color: var(--bg-color);
             color: var(--text-main);
             min-height: 100vh;
@@ -42,8 +42,8 @@
             align-items: center;
             justify-content: center;
             padding: 24px;
-            background-image: radial-gradient(circle at top left, rgba(99, 102, 241, 0.15), transparent 40%),
-                              radial-gradient(circle at bottom right, rgba(168, 85, 247, 0.1), transparent 40%);
+            background-image: radial-gradient(circle at top left, rgba(127, 0, 255, 0.08), transparent 40%),
+                              radial-gradient(circle at bottom right, rgba(0, 114, 255, 0.06), transparent 40%);
         }
 
         .auth-container {
@@ -53,7 +53,7 @@
             border: 1px solid var(--border);
             border-radius: 16px;
             padding: 40px;
-            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3), 0 8px 10px -6px rgba(0, 0, 0, 0.3);
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.05);
             backdrop-filter: blur(10px);
             text-align: center;
             animation: fadeIn 0.4s ease-out;
@@ -68,8 +68,8 @@
             width: 72px;
             height: 72px;
             border-radius: 50%;
-            background-color: rgba(99, 102, 241, 0.1);
-            border: 1px solid rgba(99, 102, 241, 0.25);
+            background-color: rgba(127, 0, 255, 0.1);
+            border: 1px solid rgba(127, 0, 255, 0.25);
             display: flex;
             align-items: center;
             justify-content: center;
@@ -79,9 +79,9 @@
         }
 
         .logo {
-            font-size: 20px;
+            font-size: 24px;
             font-weight: 700;
-            background: linear-gradient(135deg, #818cf8, #c084fc);
+            background: linear-gradient(135deg, #7f00ff 0%, #0072ff 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             margin-bottom: 16px;
@@ -89,8 +89,9 @@
         }
 
         .title {
+            font-family: 'Outfit', sans-serif;
             font-size: 22px;
-            font-weight: 600;
+            font-weight: 700;
             color: var(--text-main);
             margin-bottom: 12px;
         }
@@ -103,13 +104,13 @@
         }
 
         .email-badge {
-            background-color: var(--input-bg);
+            background-color: var(--bg-color);
             border: 1px solid var(--border);
             border-radius: 20px;
             padding: 6px 16px;
             font-family: monospace;
             font-size: 13px;
-            color: #d1d5db;
+            color: var(--text-main);
             display: inline-block;
             margin-bottom: 24px;
             max-width: 100%;
@@ -120,37 +121,50 @@
 
         .btn-check {
             width: 100%;
-            padding: 14px;
-            background-color: var(--primary);
+            padding: 14px 28px;
+            background: linear-gradient(135deg, #7f00ff 0%, #0072ff 100%);
             border: none;
-            border-radius: 8px;
+            border-radius: 30px;
             color: white;
-            font-size: 14px;
+            font-size: 15px;
             font-weight: 600;
             cursor: pointer;
-            transition: background-color 0.2s;
+            transition: all 0.3s cubic-bezier(0.165, 0.84, 0.44, 1);
             margin-bottom: 12px;
             display: flex;
             align-items: center;
             justify-content: center;
             gap: 8px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            box-shadow: 0 4px 15px rgba(127, 0, 255, 0.15);
         }
 
         .btn-check:hover {
-            background-color: var(--primary-hover);
+            transform: translateY(-1px);
+            box-shadow: 0 6px 20px rgba(0, 114, 255, 0.25);
+            background: linear-gradient(135deg, #00f2fe 0%, #4facfe 100%);
+            color: #0c1a30;
+        }
+
+        .btn-check:disabled {
+            background: #cbd5e1 !important;
+            color: #94a3b8 !important;
+            box-shadow: none !important;
+            cursor: not-allowed;
         }
 
         .btn-resend {
             width: 100%;
-            padding: 14px;
-            background-color: var(--input-bg);
+            padding: 14px 28px;
+            background-color: var(--card-bg);
             border: 1px solid var(--border);
-            border-radius: 8px;
+            border-radius: 30px;
             color: var(--text-main);
             font-size: 14px;
-            font-weight: 500;
+            font-weight: 600;
             cursor: pointer;
-            transition: background-color 0.2s, border-color 0.2s;
+            transition: all 0.3s ease;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -158,8 +172,8 @@
         }
 
         .btn-resend:hover {
-            background-color: var(--border);
-            border-color: #374151;
+            background-color: var(--bg-color);
+            border-color: var(--text-muted);
         }
 
         .btn-resend:disabled {
@@ -177,10 +191,11 @@
         .footer-link a {
             color: var(--primary);
             text-decoration: none;
-            font-weight: 500;
+            font-weight: 600;
         }
 
         .footer-link a:hover {
+            color: var(--primary-hover);
             text-decoration: underline;
         }
 
@@ -198,15 +213,16 @@
         }
 
         .toast {
-            background: #111827;
+            background-color: var(--card-bg);
             border: 1px solid var(--border);
             border-radius: 12px;
-            padding: 16px 20px;
-            color: var(--text-main);
-            box-shadow: 0 10px 15px -3px rgba(0,0,0,0.3);
+            padding: 16px;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
             display: flex;
             align-items: center;
             gap: 12px;
+            color: var(--text-main);
+            font-size: 14px;
             animation: slideIn 0.3s ease-out forwards;
             position: relative;
             overflow: hidden;
@@ -263,7 +279,7 @@
         <div class="icon-wrapper">
             <i class="fa-regular fa-envelope-open"></i>
         </div>
-        <span class="logo"><i class="fa-solid fa-rocket"></i> Startup Summit</span>
+        <span class="logo"><i class="fa-solid fa-rocket"></i> Startup Business Summit</span>
         <h1 class="title">Verify your email</h1>
         <p class="desc">
             We've sent a verification link to your email address. Please click the link to confirm your account and activate your portal access.

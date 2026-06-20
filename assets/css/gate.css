@@ -89,11 +89,11 @@
 
 /* Main typography headings */
 .main-heading {
-    font-size: 28px;
+    font-size: 36px;
     font-weight: 900;
     line-height: 1.2;
     color: #0f172a;
-    margin: 4px 0 0;
+    margin: 8px 0;
     letter-spacing: -0.5px;
 }
 
@@ -114,7 +114,7 @@
 .bharat-mandapam-hero {
     position: relative;
     width: 100%;
-    height: 185px;
+    aspect-ratio: 16 / 9;
     border-radius: 16px;
     overflow: hidden;
     box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.15);
@@ -509,38 +509,73 @@
     text-decoration: underline;
 }
 
-/* Gradient buttons */
-.gradient-btn {
-    width: 100%;
-    padding: 14px;
-    background: linear-gradient(90deg, #f97316 0%, #a855f7 100%);
-    border: none;
-    border-radius: 30px;
-    color: #ffffff;
-    font-size: 14px;
-    font-weight: 700;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 10px;
-    transition: all 0.2s;
-    box-shadow: 0 4px 14px rgba(249, 115, 22, 0.25);
-    margin-top: 8px;
+/* Gate Action Buttons overrides to bypass theme general styling */
+#homepage-gate .gradient-btn {
+    width: 100% !important;
+    height: 48px !important;
+    padding: 12px 24px !important;
+    background: var(--sbs-gradient) !important;
+    border: none !important;
+    border-radius: 12px !important;
+    color: #ffffff !important;
+    font-size: 16px !important;
+    font-weight: 600 !important;
+    letter-spacing: 0.5px !important;
+    cursor: pointer !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 10px !important;
+    transition: all 0.2s ease-in-out !important;
+    box-shadow: 0 4px 15px rgba(127, 0, 255, 0.15) !important;
+    margin-top: 8px !important;
+    text-transform: none !important;
 }
 
-.gradient-btn:hover {
-    opacity: 0.95;
-    transform: translateY(-1px);
-    box-shadow: 0 6px 20px rgba(249, 115, 22, 0.35);
+#homepage-gate .gradient-btn:hover {
+    background: var(--sbs-gradient-glow) !important;
+    color: #0c1a30 !important;
+    box-shadow: 0 6px 20px rgba(0, 114, 255, 0.25) !important;
+    transform: translateY(-1px) !important;
 }
 
-.gradient-btn:disabled {
-    background: #cbd5e1;
-    color: #94a3b8;
-    cursor: not-allowed;
-    box-shadow: none;
-    transform: none;
+#homepage-gate .outline-btn {
+    width: 100% !important;
+    height: 48px !important;
+    padding: 12px 24px !important;
+    background: transparent !important;
+    border: 2px solid #7f00ff !important;
+    border-radius: 12px !important;
+    color: #7f00ff !important;
+    font-size: 16px !important;
+    font-weight: 600 !important;
+    letter-spacing: 0.5px !important;
+    cursor: pointer !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 10px !important;
+    transition: all 0.2s ease-in-out !important;
+    box-shadow: none !important;
+    margin-top: 8px !important;
+    text-transform: none !important;
+}
+
+#homepage-gate .outline-btn:hover {
+    background: #7f00ff !important;
+    color: #ffffff !important;
+    box-shadow: 0 4px 15px rgba(127, 0, 255, 0.15) !important;
+    transform: translateY(-1px) !important;
+}
+
+#homepage-gate .gradient-btn:disabled,
+#homepage-gate .outline-btn:disabled {
+    background: #cbd5e1 !important;
+    color: #94a3b8 !important;
+    border-color: #cbd5e1 !important;
+    cursor: not-allowed !important;
+    box-shadow: none !important;
+    transform: none !important;
 }
 
 /* Google Sign-in button */
@@ -616,13 +651,17 @@
 .trust-markers {
     display: flex;
     justify-content: space-between;
-    padding: 0 10px;
+    gap: 16px;
+    padding: 16px 10px 0;
+    border-top: 1px solid #e2e8f0;
+    margin-top: 12px;
 }
 
 .trust-item {
     display: flex;
     align-items: center;
     gap: 8px;
+    white-space: nowrap;
 }
 
 .trust-icon {
@@ -657,17 +696,13 @@
     }
     
     .main-heading {
-        font-size: 32px;
-    }
-    
-    .hero-image {
-        height: 260px;
+        font-size: 30px;
     }
 }
 
 @media (max-width: 640px) {
     .main-heading {
-        font-size: 26px;
+        font-size: 24px;
     }
     
     .stats-strip {
@@ -702,6 +737,8 @@
         flex-direction: column;
         gap: 12px;
         align-items: center;
+        border-top: 1px solid #e2e8f0;
+        padding-top: 16px;
     }
     
     .trust-item {
@@ -712,6 +749,6 @@
  
 @media (min-width: 1025px) {
     #homepage-gate {
-        overflow-y: hidden;
+        overflow-y: auto;
     }
 }

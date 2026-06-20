@@ -936,6 +936,46 @@
                 grid-column: span 1;
             }
         }
+
+        /* Strict CSS overrides to prevent global styling bleed into the dashboard sidebar buttons */
+        .sidebar .nav-item,
+        .sidebar .nav-item:visited,
+        .sidebar .nav-item:active,
+        .sidebar .nav-item:focus {
+            background: transparent !important;
+            background-color: transparent !important;
+            color: var(--text-secondary) !important;
+            border-radius: var(--radius) !important;
+            box-shadow: none !important;
+            text-transform: none !important;
+            letter-spacing: normal !important;
+            transition: all 0.2s ease !important;
+            font-family: 'Outfit', 'Inter', sans-serif !important;
+            font-weight: 500 !important;
+            transform: none !important;
+            border: none !important;
+        }
+
+        .sidebar .nav-item:hover {
+            color: var(--text-primary) !important;
+            background-color: rgba(0, 0, 0, 0.03) !important;
+            background: rgba(0, 0, 0, 0.03) !important;
+            box-shadow: none !important;
+            transform: none !important;
+        }
+
+        .sidebar .nav-item.active {
+            color: #ffffff !important;
+            background-color: var(--accent) !important;
+            background: var(--accent) !important;
+            border-radius: var(--radius) !important;
+            box-shadow: none !important;
+            transform: none !important;
+        }
+
+        .sidebar .sidebar-footer .nav-item {
+            color: var(--danger) !important;
+        }
     </style>
 </head>
 <body>
@@ -1163,7 +1203,12 @@
                 <!-- 7. PROFILE VIEW -->
                 <div id="view-profile" class="dashboard-view">
                     <div class="metric-card" style="flex-direction: column; align-items: stretch; gap: 24px; padding: 32px;">
-                        <h3 style="font-family: 'Outfit', sans-serif;">Manage Personal Profile Details</h3>
+                        <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px;">
+                            <h3 style="font-family: 'Outfit', sans-serif; margin: 0;">Manage Personal Profile Details</h3>
+                            <a href="index.html" class="btn-premium btn-outline" style="display: inline-flex; align-items: center; gap: 8px; font-size: 13px; text-decoration: none; padding: 10px 20px;">
+                                <i class="fa-solid fa-house"></i> Back to Homepage
+                            </a>
+                        </div>
                         
                         <!-- Avatar Photo uploader component -->
                         <div class="avatar-upload-row">
