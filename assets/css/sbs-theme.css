@@ -60,7 +60,7 @@ header,
 }
 
 .elementor-nav-menu--dropdown {
-    display: none;
+    display: none !important;
     background-color: var(--sbs-bg) !important;
     border: 1px solid var(--sbs-card-border) !important;
 }
@@ -936,5 +936,13 @@ header.elementor-location-header,
     .elementor-nav-menu--main .elementor-item {
         padding: 5px 10px !important;
         font-size: 13px !important;
+    }
+}
+
+/* Force mobile menu dropdown hidden on desktop */
+@media (min-width: 1025px) {
+    .elementor-nav-menu--dropdown,
+    .elementor-nav-menu--dropdown.elementor-active {
+        display: none !important;
     }
 }
