@@ -743,9 +743,21 @@ header.elementor-location-header,
     }
 
     #top_navbar_box_custom .elementor-element-8eba15a {
+        flex: 1 !important;
         width: auto !important;
         display: flex !important;
         justify-content: flex-end !important;
+    }
+
+    #top_navbar_box_custom .elementor-element-f73b95a {
+        display: flex !important;
+        justify-content: flex-end !important;
+        width: auto !important;
+    }
+
+    #top_navbar_box_custom .elementor-menu-toggle {
+        margin-left: auto !important;
+        margin-right: 0 !important;
     }
 }
 
