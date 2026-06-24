@@ -644,7 +644,7 @@
         /* Analytics & Graphs */
         .charts-container {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(min(450px, 100%), 1fr));
             gap: 24px;
             margin-top: 24px;
         }
@@ -660,6 +660,63 @@
             margin: 0 0 16px 0;
             font-size: 16px;
             font-weight: 700;
+        }
+
+        /* Mobile Responsive Upgrades */
+        @media (max-width: 992px) {
+            .workspace-split {
+                grid-template-columns: 1fr !important;
+                gap: 16px !important;
+            }
+            .sidebar-menu {
+                flex-direction: row !important;
+                overflow-x: auto !important;
+                padding-bottom: 8px !important;
+                white-space: nowrap !important;
+                -webkit-overflow-scrolling: touch !important;
+                gap: 8px !important;
+            }
+            .menu-btn {
+                padding: 10px 16px !important;
+                font-size: 13.5px !important;
+                white-space: nowrap !important;
+                flex: 0 0 auto !important;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .dashboard-header {
+                flex-direction: column !important;
+                gap: 16px !important;
+                padding: 16px !important;
+                text-align: center !important;
+                align-items: center !important;
+            }
+            .global-search-container {
+                max-width: 100% !important;
+                width: 100% !important;
+            }
+            .user-nav-profile {
+                width: 100% !important;
+                justify-content: space-between !important;
+            }
+            .modal-box {
+                width: 95% !important;
+                margin: 10px !important;
+                max-height: 90vh !important;
+            }
+            .modal-body {
+                grid-template-columns: 1fr !important;
+                padding: 20px !important;
+                gap: 20px !important;
+            }
+            .details-grid {
+                grid-template-columns: 1fr !important;
+                gap: 12px !important;
+            }
+            .kpi-grid {
+                grid-template-columns: 1fr !important;
+            }
         }
     </style>
 </head>

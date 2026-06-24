@@ -12,6 +12,8 @@
         "index.html",
         "about.html",
         "speakers.html",
+        "sponsorship.html",
+        "book_stall.html",
         "login.html",
         "register.html",
         "register-account.html",
@@ -42,6 +44,8 @@ document.addEventListener('DOMContentLoaded', async () => {
         "index.html",
         "about.html",
         "speakers.html",
+        "sponsorship.html",
+        "book_stall.html",
         "login.html",
         "register.html",
         "register-account.html",
@@ -211,19 +215,13 @@ document.addEventListener('DOMContentLoaded', async () => {
             const gate = document.getElementById('homepage-gate');
             const mainContent = document.getElementById('main-website-content');
             
-            if (user) {
-                // Authorized: Show website contents
-                if (gate) gate.style.display = 'none';
-                if (mainContent) mainContent.style.display = 'block';
-            } else {
-                // Not authenticated: Enforce launch gate layout only
-                if (gate) gate.style.display = 'flex';
-                if (mainContent) mainContent.style.display = 'none';
-                startCountdown();
-            }
+            // Bypass gate and show main content directly
+            if (gate) gate.style.display = 'none';
+            if (mainContent) mainContent.style.display = 'block';
+            
             hideLoader();
         } else {
-            // Other public pages (about.html, speakers.html, login.html etc.)
+            // Other public pages (about.html, login.html etc.)
             hideLoader();
         }
     }
